@@ -8,10 +8,14 @@ export class Game {
     wave: 1,
     score: 0,
     gameActive: true,
+    waveKills: 0,
+    killsToNextWave: 9,
+    recentAttacks: [],
   };
   currentPlayerId: string | null = null;
   lastMoveTime = 0;
   moveDebounce = 50; // ms
+  lastAttackTime = 0;
 
   get currentPlayer(): Player | null {
     if (!this.currentPlayerId) return null;
@@ -37,5 +41,9 @@ export class Game {
       return true;
     }
     return false;
+  }
+
+  markAttack(): void {
+    this.lastAttackTime = Date.now();
   }
 }

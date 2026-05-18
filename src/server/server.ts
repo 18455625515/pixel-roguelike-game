@@ -13,8 +13,9 @@ const PORT = process.env.PORT || 3000;
 const game = new Game();
 let lastUpdateTime = Date.now();
 
-// Serve static files
+// Serve compiled client assets first, then the source public directory for index.html.
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../../public')));
 
 // Main game loop
 setInterval(() => {
@@ -69,6 +70,12 @@ wss.on('connection', (ws) => {
             const moveMsg = message as MoveMessage;
             const { dx, dy } = moveMsg.payload;
             game.movePlayer(playerId, dx, dy, 0.016); // Approximate delta time
+          }
+          break;
+
+        case 'attack':
+          if (playerId) {
+            game.attack(playerId);
           }
           break;
 

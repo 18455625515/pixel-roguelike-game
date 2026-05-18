@@ -1,0 +1,23 @@
+{
+  "frameWidth": 32,
+  "frameHeight": 32,
+  "columns": [
+    "idle",
+    "walk1",
+    "walk2",
+    "attack"
+  ],
+  "directions": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "sheets": {
+    "player": "player.png",
+    "goblin": "goblin.png",
+    "orc": "orc.png",
+    "troll": "troll.png",
+    "dragon": "dragon.png"
+  }
+}

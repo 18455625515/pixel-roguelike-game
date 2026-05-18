@@ -13,6 +13,8 @@ export enum ItemType {
   ARMOR = 'armor',
 }
 
+export type WeaponType = 'rustySword' | 'ironSword' | 'battleAxe' | 'crystalBlade';
+
 export interface Vector2 {
   x: number;
   y: number;
@@ -32,6 +34,11 @@ export interface Player {
   armor: number;
   level: number;
   experience: number;
+  experienceToNextLevel: number;
+  weapon: WeaponType;
+  weaponName: string;
+  attackRange: number;
+  attackCooldown: number;
   direction: 'up' | 'down' | 'left' | 'right';
 }
 
@@ -64,11 +71,27 @@ export interface GameState {
   wave: number;
   score: number;
   gameActive: boolean;
+  waveKills: number;
+  killsToNextWave: number;
+  recentAttacks: AttackEvent[];
+}
+
+export interface AttackEvent {
+  id: string;
+  playerId: string;
+  x: number;
+  y: number;
+  direction: 'up' | 'down' | 'left' | 'right';
+  weapon: WeaponType;
+  range: number;
+  hit: boolean;
+  createdAt: number;
 }
 
 // WebSocket 消息类型
 export type MessageType =
   | 'join'
+  | 'joinSuccess'
   | 'move'
   | 'attack'
   | 'gameState'
@@ -92,6 +115,14 @@ export interface JoinMessage extends Message {
   };
 }
 
+export interface JoinSuccessMessage extends Message {
+  type: 'joinSuccess';
+  payload: {
+    playerId: string;
+    player: Player;
+  };
+}
+
 export interface MoveMessage extends Message {
   type: 'move';
   payload: {
@@ -99,6 +130,11 @@ export interface MoveMessage extends Message {
     dy: number;
     direction: 'up' | 'down' | 'left' | 'right';
   };
+}
+
+export interface AttackMessage extends Message {
+  type: 'attack';
+  payload: Record<string, never>;
 }
 
 export interface GameStateMessage extends Message {

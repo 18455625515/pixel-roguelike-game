@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>像素风肉鸽游戏 - Pixel Roguelike</title>
+  <title>像素森林肉鸽</title>
   <style>
     * {
       margin: 0;
@@ -11,197 +11,348 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg: #08090d;
+      --panel: #12151c;
+      --panel-2: #191e27;
+      --line: #2e3a45;
+      --text: #f4f7ee;
+      --muted: #9aa79b;
+      --green: #39ff88;
+      --cyan: #50d9ff;
+      --red: #ff5261;
+      --gold: #ffd166;
+    }
+
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #000;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        var(--bg);
+      background-size: 24px 24px;
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      color: #fff;
+      padding: 24px;
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     #joinDialog {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #1a1a1a;
-      padding: 40px;
-      border-radius: 10px;
-      border: 2px solid #00ff00;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      width: min(380px, calc(100vw - 32px));
+      background: var(--panel);
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--green);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
       z-index: 100;
-      min-width: 300px;
     }
 
     #joinDialog h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #00ff00;
-      text-shadow: 0 0 10px #00ff00;
+      margin-bottom: 10px;
+      color: var(--green);
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 28px;
+      letter-spacing: 0;
     }
 
     #joinDialog p {
-      text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+      color: var(--muted);
       font-size: 14px;
+      line-height: 1.6;
     }
 
     #playerNameInput {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      background-color: #2a2a2a;
-      border: 1px solid #00ff00;
-      color: #00ff00;
-      font-family: monospace;
-      border-radius: 5px;
-      font-size: 14px;
+      height: 42px;
+      padding: 0 12px;
+      margin-bottom: 14px;
+      background-color: #0b0d12;
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 4px;
+      outline: none;
     }
 
     #playerNameInput:focus {
-      outline: none;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-    }
-
-    #playerNameInput::placeholder {
-      color: #666;
+      border-color: var(--green);
+      box-shadow: 0 0 0 2px rgba(57, 255, 136, 0.16);
     }
 
     #joinButton {
       width: 100%;
-      padding: 12px;
-      background-color: #00ff00;
-      color: #000;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
+      height: 44px;
+      background: var(--green);
+      color: #07110c;
+      border: 0;
+      border-radius: 4px;
+      font-weight: 800;
       cursor: pointer;
-      font-size: 16px;
-      transition: all 0.3s;
     }
 
     #joinButton:hover {
-      background-color: #00cc00;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      background: #63ffa2;
     }
 
-    #joinButton:active {
-      transform: scale(0.98);
+    .instructions {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
     }
 
     #gameContainer {
       display: none;
-      flex-direction: column;
+      width: min(1180px, 100%);
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    .playfield {
+      min-width: 0;
+    }
+
+    .gameHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+    }
+
+    .gameTitle {
+      color: var(--green);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .quickControls {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .quickControls kbd,
+    .key {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      min-width: 26px;
+      height: 22px;
+      padding: 0 7px;
+      margin: 0 2px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-bottom-color: #11151b;
+      border-radius: 4px;
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 12px;
     }
 
     #gameCanvas {
-      background-color: #1a1a1a;
-      border: 3px solid #00ff00;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      width: 800px;
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+      display: block;
+      background-color: #171a1f;
+      border: 1px solid #536271;
+      outline: 3px solid #0d1117;
+      box-shadow: 0 0 0 1px rgba(57, 255, 136, 0.25), 0 18px 42px rgba(0, 0, 0, 0.55);
       image-rendering: pixelated;
-      image-rendering: -moz-crisp-edges;
       image-rendering: crisp-edges;
     }
 
     #hud {
-      margin-top: 20px;
-      padding: 15px 20px;
-      background-color: #1a1a1a;
-      border: 2px solid #00ff00;
-      border-radius: 5px;
-      min-width: 800px;
+      width: 280px;
+      padding: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--cyan);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-content: start;
     }
 
     .stat {
-      text-align: center;
-      font-family: monospace;
-      font-size: 14px;
+      min-height: 52px;
+      padding: 10px;
+      background: var(--panel-2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
     }
 
     .stat-label {
-      color: #00ff00;
-      font-weight: bold;
       display: block;
       margin-bottom: 5px;
+      color: var(--muted);
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 11px;
     }
 
     .stat-value {
-      color: #fff;
+      color: var(--text);
+      font-family: Consolas, "Microsoft YaHei", monospace;
       font-size: 18px;
+      font-weight: 800;
     }
 
-    #controls {
-      margin-top: 15px;
-      text-align: center;
+    .stat.health .stat-value {
+      color: var(--red);
+    }
+
+    .stat.score .stat-value,
+    .stat.objective .stat-value {
+      color: var(--gold);
+    }
+
+    .hudSection {
+      padding: 10px;
+      color: var(--muted);
+      background: #0d1016;
+      border: 1px solid var(--line);
+      border-radius: 4px;
       font-size: 12px;
-      color: #aaa;
+      line-height: 1.8;
     }
 
-    .instructions {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 13px;
-      line-height: 1.8;
+    .hudSection strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--green);
+      font-family: Consolas, "Microsoft YaHei", monospace;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      body {
+        align-items: flex-start;
+      }
+
+      #gameContainer {
+        flex-direction: column;
+      }
+
+      #hud {
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .hudSection {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+
+      .gameHeader {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      #hud {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat-value {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="joinDialog">
-    <h1>⚔️ 像素风肉鸽</h1>
-    <p>输入你的昵称开始游戏</p>
+    <h1>像素森林肉鸽</h1>
+    <p>进入森林，击杀足够数量的敌人推进波次。升级会强化属性，并在 3/5/7 级自动解锁新武器。</p>
     <input
       type="text"
       id="playerNameInput"
       placeholder="输入玩家名称..."
       maxlength="20"
-    />
+    >
     <button id="joinButton">进入游戏</button>
     <div class="instructions">
-      <strong>操作方法：</strong><br/>
-      WASD 或 方向键 - 移动<br/>
-      靠近敌人自动攻击<br/>
-      捡起掉落物品升级<br/>
+      <strong>操作说明</strong><br>
+      WASD 或方向键：移动<br>
+      空格 或 J：朝当前方向攻击<br>
+      击杀敌人获得经验，拾取掉落物强化属性
     </div>
   </div>
 
   <div id="gameContainer">
-    <canvas id="gameCanvas"></canvas>
-    <div id="hud">
-      <div class="stat">
-        <span class="stat-label">生命值</span>
-        <span class="stat-value" id="health">100/100</span>
+    <main class="playfield">
+      <div class="gameHeader">
+        <div class="gameTitle">森林远征</div>
+        <div class="quickControls">
+          移动 <kbd>WASD</kbd>/<kbd>方向键</kbd> 攻击 <kbd>空格</kbd>/<kbd>J</kbd>
+        </div>
+      </div>
+      <canvas id="gameCanvas"></canvas>
+    </main>
+
+    <aside id="hud">
+      <div class="stat health">
+        <span class="stat-label">生命</span>
+        <span class="stat-value" id="health">生命 100/100</span>
       </div>
       <div class="stat">
         <span class="stat-label">等级</span>
-        <span class="stat-value" id="level">1</span>
+        <span class="stat-value" id="level">等级 1</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">经验</span>
+        <span class="stat-value" id="xp">经验 0/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">武器</span>
+        <span class="stat-value" id="weapon">生锈短剑</span>
       </div>
       <div class="stat">
         <span class="stat-label">伤害</span>
-        <span class="stat-value" id="damage">10</span>
+        <span class="stat-value" id="damage">伤害 10</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">攻击范围</span>
+        <span class="stat-value" id="range">范围 52</span>
       </div>
       <div class="stat">
         <span class="stat-label">护甲</span>
-        <span class="stat-value" id="armor">0</span>
+        <span class="stat-value" id="armor">护甲 0</span>
       </div>
       <div class="stat">
-        <span class="stat-label">当前波次</span>
-        <span class="stat-value" id="wave">1</span>
+        <span class="stat-label">波次</span>
+        <span class="stat-value" id="wave">第 1 波</span>
       </div>
-      <div class="stat">
+      <div class="stat objective">
+        <span class="stat-label">本波目标</span>
+        <span class="stat-value" id="objective">0/9</span>
+      </div>
+      <div class="stat score">
         <span class="stat-label">分数</span>
-        <span class="stat-value" id="score">0</span>
+        <span class="stat-value" id="score">分数 0</span>
       </div>
-    </div>
-    <div id="controls">
-      使用 WASD 或 方向键 移动 | 敌人会自动靠近你
-    </div>
+      <div class="stat">
+        <span class="stat-label">场上敌人</span>
+        <span class="stat-value" id="enemyCount">0</span>
+      </div>
+      <div class="hudSection">
+        <strong>玩法规则</strong>
+        攻击只会命中当前朝向前方的敌人。被敌人碰到会受到一次伤害，然后该敌人进入短暂攻击冷却。
+      </div>
+    </aside>
   </div>
 
   <script src="bundle.js"></script>

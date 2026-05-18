@@ -1,0 +1,11 @@
+{
+  "tileWidth": 32,
+  "tileHeight": 32,
+  "tiles": [
+    "grass",
+    "tree",
+    "bush",
+    "stone"
+  ],
+  "sheet": "forest.png"
+}

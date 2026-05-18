@@ -9,6 +9,7 @@
     "build": "tsc && webpack",
     "build:server": "tsc",
     "build:client": "webpack",
+    "generate:sprites": "node scripts/generate-sprites.js",
     "clean": "rm -rf dist build"
   },
   "dependencies": {

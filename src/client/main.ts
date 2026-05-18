@@ -30,6 +30,11 @@ const keys: Record<string, boolean> = {};
 window.addEventListener('keydown', (e) => {
   keys[e.key.toLowerCase()] = true;
   keys[e.code] = true;
+
+  if (e.code === 'Space' || e.key.toLowerCase() === 'j') {
+    e.preventDefault();
+    network.attack();
+  }
 });
 
 window.addEventListener('keyup', (e) => {
@@ -60,7 +65,7 @@ function gameLoop(): void {
 
   // Update and render
   game.update(deltaTime);
-  renderer.render(game.gameState);
+  renderer.render(game.gameState, game.currentPlayerId, game.lastAttackTime);
 
   // Update HUD
   updateHUD();
@@ -72,12 +77,31 @@ function updateHUD(): void {
   const player = game.currentPlayer;
   if (!player) return;
 
-  document.getElementById('health')!.textContent = `HP: ${Math.ceil(player.health)}/${player.maxHealth}`;
-  document.getElementById('level')!.textContent = `Level: ${player.level}`;
-  document.getElementById('damage')!.textContent = `DMG: ${player.damage.toFixed(1)}`;
-  document.getElementById('armor')!.textContent = `ARM: ${player.armor.toFixed(1)}`;
-  document.getElementById('wave')!.textContent = `Wave: ${game.gameState.wave}`;
-  document.getElementById('score')!.textContent = `Score: ${game.gameState.score}`;
+  document.getElementById('health')!.textContent = `生命 ${Math.ceil(player.health)}/${player.maxHealth}`;
+  document.getElementById('level')!.textContent = `等级 ${player.level}`;
+  const weaponBonus: Record<string, number> = {
+    rustySword: 0,
+    ironSword: 8,
+    battleAxe: 18,
+    crystalBlade: 28,
+  };
+  const weaponNames: Record<string, string> = {
+    rustySword: '生锈短剑',
+    ironSword: '铁剑',
+    battleAxe: '战斧',
+    crystalBlade: '水晶刃',
+  };
+  const attackDamage = player.damage + (weaponBonus[player.weapon] ?? 0);
+
+  document.getElementById('damage')!.textContent = `伤害 ${attackDamage.toFixed(1)}`;
+  document.getElementById('armor')!.textContent = `护甲 ${player.armor.toFixed(1)}`;
+  document.getElementById('xp')!.textContent = `经验 ${Math.floor(player.experience)}/${player.experienceToNextLevel}`;
+  document.getElementById('weapon')!.textContent = weaponNames[player.weapon] ?? player.weaponName;
+  document.getElementById('range')!.textContent = `范围 ${player.attackRange}`;
+  document.getElementById('wave')!.textContent = `第 ${game.gameState.wave} 波`;
+  document.getElementById('objective')!.textContent = `${game.gameState.waveKills}/${game.gameState.killsToNextWave}`;
+  document.getElementById('score')!.textContent = `分数 ${game.gameState.score}`;
+  document.getElementById('enemyCount')!.textContent = String(Object.keys(game.gameState.enemies).length);
 }
 
 // Setup join button

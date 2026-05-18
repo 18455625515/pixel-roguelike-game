@@ -81,6 +81,17 @@ export class NetworkManager {
     this.ws.send(JSON.stringify(message));
   }
 
+  attack(): void {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+    this.game.markAttack();
+    const message: Message = {
+      type: 'attack',
+      payload: {},
+    };
+    this.ws.send(JSON.stringify(message));
+  }
+
   private handleMessage(message: Message): void {
     switch (message.type) {
       case 'joinSuccess':
