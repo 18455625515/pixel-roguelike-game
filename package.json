@@ -1,0 +1,30 @@
+{
+  "name": "pixel-roguelike-game",
+  "version": "1.0.0",
+  "description": "A multiplayer pixel art roguelike dungeon crawler game",
+  "main": "dist/server/server.js",
+  "scripts": {
+    "start": "node dist/server/server.js",
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server/server.js\"",
+    "build": "tsc && webpack",
+    "build:server": "tsc",
+    "build:client": "webpack",
+    "clean": "rm -rf dist build"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.13.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/express": "^4.17.17",
+    "@types/ws": "^8.5.4",
+    "typescript": "^5.0.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "ts-loader": "^9.4.4",
+    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.0"
+  }
+}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>像素风肉鸽游戏 - Pixel Roguelike</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    #joinDialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 10px;
+      border: 2px solid #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+      z-index: 100;
+      min-width: 300px;
+    }
+
+    #joinDialog h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    #joinDialog p {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    #playerNameInput {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #2a2a2a;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      font-family: monospace;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    #playerNameInput:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    #playerNameInput::placeholder {
+      color: #666;
+    }
+
+    #joinButton {
+      width: 100%;
+      padding: 12px;
+      background-color: #00ff00;
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    #joinButton:hover {
+      background-color: #00cc00;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    #joinButton:active {
+      transform: scale(0.98);
+    }
+
+    #gameContainer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gameCanvas {
+      background-color: #1a1a1a;
+      border: 3px solid #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+
+    #hud {
+      margin-top: 20px;
+      padding: 15px 20px;
+      background-color: #1a1a1a;
+      border: 2px solid #00ff00;
+      border-radius: 5px;
+      min-width: 800px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .stat {
+      text-align: center;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .stat-label {
+      color: #00ff00;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      color: #fff;
+      font-size: 18px;
+    }
+
+    #controls {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .instructions {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div id="joinDialog">
+    <h1>⚔️ 像素风肉鸽</h1>
+    <p>输入你的昵称开始游戏</p>
+    <input
+      type="text"
+      id="playerNameInput"
+      placeholder="输入玩家名称..."
+      maxlength="20"
+    />
+    <button id="joinButton">进入游戏</button>
+    <div class="instructions">
+      <strong>操作方法：</strong><br/>
+      WASD 或 方向键 - 移动<br/>
+      靠近敌人自动攻击<br/>
+      捡起掉落物品升级<br/>
+    </div>
+  </div>
+
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+    <div id="hud">
+      <div class="stat">
+        <span class="stat-label">生命值</span>
+        <span class="stat-value" id="health">100/100</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">等级</span>
+        <span class="stat-value" id="level">1</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">伤害</span>
+        <span class="stat-value" id="damage">10</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">护甲</span>
+        <span class="stat-value" id="armor">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">当前波次</span>
+        <span class="stat-value" id="wave">1</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">分数</span>
+        <span class="stat-value" id="score">0</span>
+      </div>
+    </div>
+    <div id="controls">
+      使用 WASD 或 方向键 移动 | 敌人会自动靠近你
+    </div>
+  </div>
+
+  <script src="bundle.js"></script>
+</body>
+</html>
