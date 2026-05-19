@@ -11,9 +11,13 @@ export enum ItemType {
   DAMAGE = 'damage',
   SPEED = 'speed',
   ARMOR = 'armor',
+  RANGE = 'range',
+  VITALITY = 'vitality',
 }
 
 export type WeaponType = 'rustySword' | 'ironSword' | 'battleAxe' | 'crystalBlade';
+export type EnemyRank = 'normal' | 'elite' | 'boss';
+export type ItemRarity = 'common' | 'rare' | 'epic';
 
 export interface Vector2 {
   x: number;
@@ -40,6 +44,7 @@ export interface Player {
   attackRange: number;
   attackCooldown: number;
   direction: 'up' | 'down' | 'left' | 'right';
+  regeneration: number;
 }
 
 export interface Enemy {
@@ -54,6 +59,7 @@ export interface Enemy {
   speed: number;
   type: 'goblin' | 'orc' | 'troll' | 'dragon';
   wave: number;
+  rank: EnemyRank;
 }
 
 export interface Item {
@@ -62,6 +68,7 @@ export interface Item {
   y: number;
   type: ItemType;
   value: number;
+  rarity: ItemRarity;
 }
 
 export interface GameState {

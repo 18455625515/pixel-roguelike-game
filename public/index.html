@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>像素森林肉鸽</title>
+  <title>边境城邦指挥官</title>
   <style>
     * {
       margin: 0;
@@ -20,23 +20,26 @@
       --muted: #9aa79b;
       --green: #39ff88;
       --cyan: #50d9ff;
-      --red: #ff5261;
       --gold: #ffd166;
     }
 
     body {
       min-height: 100vh;
+      min-height: 100dvh;
       color: var(--text);
       background:
         linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
         var(--bg);
       background-size: 24px 24px;
-      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 24px;
+      overflow: hidden;
+      touch-action: none;
+      overscroll-behavior: none;
     }
 
     button,
@@ -57,7 +60,6 @@
     #joinDialog h1 {
       margin-bottom: 10px;
       color: var(--green);
-      font-family: Consolas, "Microsoft YaHei", monospace;
       font-size: 28px;
       letter-spacing: 0;
     }
@@ -97,10 +99,6 @@
       cursor: pointer;
     }
 
-    #joinButton:hover {
-      background: #63ffa2;
-    }
-
     .instructions {
       margin-top: 18px;
       padding-top: 14px;
@@ -112,13 +110,15 @@
 
     #gameContainer {
       display: none;
-      width: min(1180px, 100%);
-      align-items: stretch;
-      gap: 16px;
+      width: min(1320px, 100%);
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
     .playfield {
       min-width: 0;
+      position: relative;
     }
 
     .gameHeader {
@@ -127,7 +127,6 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 10px;
-      font-family: Consolas, "Microsoft YaHei", monospace;
     }
 
     .gameTitle {
@@ -141,26 +140,8 @@
       font-size: 12px;
     }
 
-    .quickControls kbd,
-    .key {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 26px;
-      height: 22px;
-      padding: 0 7px;
-      margin: 0 2px;
-      color: var(--text);
-      background: var(--panel-2);
-      border: 1px solid var(--line);
-      border-bottom-color: #11151b;
-      border-radius: 4px;
-      font-family: Consolas, "Microsoft YaHei", monospace;
-      font-size: 12px;
-    }
-
     #gameCanvas {
-      width: 800px;
+      width: min(1000px, calc(100vw - 48px));
       max-width: 100%;
       aspect-ratio: 4 / 3;
       display: block;
@@ -170,68 +151,95 @@
       box-shadow: 0 0 0 1px rgba(57, 255, 136, 0.25), 0 18px 42px rgba(0, 0, 0, 0.55);
       image-rendering: pixelated;
       image-rendering: crisp-edges;
+      touch-action: none;
+      user-select: none;
     }
 
-    #hud {
-      width: 280px;
-      padding: 12px;
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-top: 3px solid var(--cyan);
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      align-content: start;
-    }
-
-    .stat {
-      min-height: 52px;
-      padding: 10px;
-      background: var(--panel-2);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 4px;
-    }
-
-    .stat-label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--muted);
-      font-family: Consolas, "Microsoft YaHei", monospace;
-      font-size: 11px;
-    }
-
-    .stat-value {
+    .statusStrip {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
       color: var(--text);
-      font-family: Consolas, "Microsoft YaHei", monospace;
-      font-size: 18px;
-      font-weight: 800;
+      background: rgba(7, 9, 12, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      font-size: 12px;
+      pointer-events: none;
     }
 
-    .stat.health .stat-value {
-      color: var(--red);
+    .touchHud {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      display: grid;
+      gap: 8px;
+      pointer-events: none;
     }
 
-    .stat.score .stat-value,
-    .stat.objective .stat-value {
-      color: var(--gold);
+    .modePanel {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      padding: 7px;
+      background: rgba(12, 15, 21, 0.9);
+      border: 1px solid rgba(57, 255, 136, 0.25);
+      border-radius: 8px;
+      backdrop-filter: blur(6px);
+      pointer-events: auto;
     }
 
-    .hudSection {
-      padding: 10px;
-      color: var(--muted);
-      background: #0d1016;
+    .actionPanel {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(12, 15, 21, 0.86);
+      border: 1px solid rgba(80, 217, 255, 0.28);
+      border-radius: 8px;
+      backdrop-filter: blur(6px);
+      pointer-events: auto;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .actionPanel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .touchBtn {
+      min-width: 58px;
+      height: 38px;
+      padding: 0 9px;
+      color: var(--text);
+      background: var(--panel-2);
       border: 1px solid var(--line);
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 12px;
-      line-height: 1.8;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      touch-action: manipulation;
     }
 
-    .hudSection strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--green);
-      font-family: Consolas, "Microsoft YaHei", monospace;
-      font-size: 12px;
+    .modePanel .touchBtn {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .touchBtn:disabled {
+      color: var(--muted);
+      cursor: default;
+    }
+
+    .touchBtn.active {
+      color: #07110c;
+      background: var(--green);
+      border-color: var(--green);
     }
 
     @media (max-width: 1100px) {
@@ -240,16 +248,7 @@
       }
 
       #gameContainer {
-        flex-direction: column;
-      }
-
-      #hud {
         width: 100%;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .hudSection {
-        grid-column: 1 / -1;
       }
     }
 
@@ -259,100 +258,67 @@
       }
 
       .gameHeader {
-        align-items: flex-start;
+        display: none;
+      }
+
+      #gameCanvas {
+        width: calc(100vw - 24px);
+        height: calc(100dvh - 24px - env(safe-area-inset-bottom));
+        aspect-ratio: auto;
+      }
+
+      .touchBtn {
+        min-width: 52px;
+        height: 34px;
+        padding: 0 8px;
+        font-size: 12px;
+      }
+
+    .statusStrip {
+        font-size: 11px;
         flex-direction: column;
       }
 
-      #hud {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .stat-value {
-        font-size: 16px;
+      .actionPanel {
+        padding-bottom: 6px;
       }
     }
   </style>
 </head>
 <body>
   <div id="joinDialog">
-    <h1>像素森林肉鸽</h1>
-    <p>进入森林，击杀足够数量的敌人推进波次。升级会强化属性，并在 3/5/7 级自动解锁新武器。</p>
+    <h1>边境城邦指挥官</h1>
+    <p>建设城池，经营资源，指挥军队，并在关键时刻亲自带领将领守住战线。</p>
     <input
       type="text"
       id="playerNameInput"
-      placeholder="输入玩家名称..."
+      placeholder="输入统帅名称..."
       maxlength="20"
     >
-    <button id="joinButton">进入游戏</button>
+    <button id="joinButton">开始战役</button>
     <div class="instructions">
-      <strong>操作说明</strong><br>
-      WASD 或方向键：移动<br>
-      空格 或 J：朝当前方向攻击<br>
-      击杀敌人获得经验，拾取掉落物强化属性
+      <strong>操作</strong><br>
+      点己方单位选择，点地面移动，点敌人或敌方建筑攻击，点资源让工人采集。<br>
+      长按拖动地图。点主城、仓库或兵营打开建造/招募操作，城墙可拖动连续建造。
     </div>
   </div>
 
   <div id="gameContainer">
     <main class="playfield">
       <div class="gameHeader">
-        <div class="gameTitle">森林远征</div>
-        <div class="quickControls">
-          移动 <kbd>WASD</kbd>/<kbd>方向键</kbd> 攻击 <kbd>空格</kbd>/<kbd>J</kbd>
-        </div>
+        <div class="gameTitle">边境城邦指挥官</div>
+        <div class="quickControls">手游优先操作：点击、长按拖动、底部指挥栏。</div>
       </div>
       <canvas id="gameCanvas"></canvas>
+      <div class="statusStrip">
+        <span id="topStatus">第 1 天 | 选择</span>
+        <span id="resourceStatus">粮 0 木 0 石 0 铁 0 金 0</span>
+      </div>
+      <div class="touchHud">
+        <div class="modePanel" id="modePanel"></div>
+        <div class="actionPanel" id="actionPanel"></div>
+      </div>
     </main>
-
-    <aside id="hud">
-      <div class="stat health">
-        <span class="stat-label">生命</span>
-        <span class="stat-value" id="health">生命 100/100</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">等级</span>
-        <span class="stat-value" id="level">等级 1</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">经验</span>
-        <span class="stat-value" id="xp">经验 0/100</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">武器</span>
-        <span class="stat-value" id="weapon">生锈短剑</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">伤害</span>
-        <span class="stat-value" id="damage">伤害 10</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">攻击范围</span>
-        <span class="stat-value" id="range">范围 52</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">护甲</span>
-        <span class="stat-value" id="armor">护甲 0</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">波次</span>
-        <span class="stat-value" id="wave">第 1 波</span>
-      </div>
-      <div class="stat objective">
-        <span class="stat-label">本波目标</span>
-        <span class="stat-value" id="objective">0/9</span>
-      </div>
-      <div class="stat score">
-        <span class="stat-label">分数</span>
-        <span class="stat-value" id="score">分数 0</span>
-      </div>
-      <div class="stat">
-        <span class="stat-label">场上敌人</span>
-        <span class="stat-value" id="enemyCount">0</span>
-      </div>
-      <div class="hudSection">
-        <strong>玩法规则</strong>
-        攻击只会命中当前朝向前方的敌人。被敌人碰到会受到一次伤害，然后该敌人进入短暂攻击冷却。
-      </div>
-    </aside>
   </div>
 
   <script src="bundle.js"></script>

@@ -18,6 +18,19 @@
     "goblin": "goblin.png",
     "orc": "orc.png",
     "troll": "troll.png",
-    "dragon": "dragon.png"
+    "dragon": "dragon.png",
+    "commander": "commander.png",
+    "worker": "worker.png",
+    "woodcutter": "woodcutter.png",
+    "stonecutter": "stonecutter.png",
+    "miner": "miner.png",
+    "farmer": "farmer.png",
+    "trader": "trader.png",
+    "swordsman": "swordsman.png",
+    "spearman": "spearman.png",
+    "archer": "archer.png",
+    "cavalry": "cavalry.png",
+    "engineer": "engineer.png",
+    "guard": "guard.png"
   }
 }

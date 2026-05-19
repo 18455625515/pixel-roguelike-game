@@ -6,6 +6,8 @@ const SPRITE_BASE_PATH = '/assets/sprites/';
 const TILE_BASE_PATH = '/assets/tiles/';
 const SPRITE_COLUMNS = ['idle', 'walk1', 'walk2', 'attack'] as const;
 const SPRITE_DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
+const ATTACK_HALF_ANGLE = Math.PI * 0.28;
+const ATTACK_EVENT_TTL = 280;
 
 type SpriteColumn = (typeof SPRITE_COLUMNS)[number];
 type SpriteDirection = (typeof SPRITE_DIRECTIONS)[number];
@@ -171,6 +173,7 @@ export class Renderer {
   private drawEnemy(enemy: Enemy): void {
     const frame = this.getCharacterFrame(enemy.id, 'down');
     if (this.drawSprite(enemy.type, enemy.x, enemy.y, 'down', frame)) {
+      this.drawEnemyRankMarker(enemy);
       this.drawCharacterOverlay(enemy.x, enemy.y, enemy.width, enemy.health, enemy.maxHealth, '#ff6600', '#ffff00');
       return;
     }
@@ -186,21 +189,28 @@ export class Renderer {
     this.ctx.fillRect(enemy.x + 6, enemy.y + 8, 4, 4); // Left eye
     this.ctx.fillRect(enemy.x + 22, enemy.y + 8, 4, 4); // Right eye
 
+    this.drawEnemyRankMarker(enemy);
     this.drawCharacterOverlay(enemy.x, enemy.y, enemy.width, enemy.health, enemy.maxHealth, '#ff6600', '#ffff00');
   }
 
   private drawItem(item: Item): void {
     const colors = this.getItemColor(item.type);
-    const size = 12;
+    const size = item.rarity === 'epic' ? 18 : item.rarity === 'rare' ? 15 : 12;
     const x = item.x + (TILE_SIZE - size) / 2;
     const y = item.y + (TILE_SIZE - size) / 2;
 
     // Draw item
+    this.ctx.save();
+    if (item.rarity !== 'common') {
+      this.ctx.shadowColor = colors.outline;
+      this.ctx.shadowBlur = item.rarity === 'epic' ? 16 : 9;
+    }
     this.ctx.fillStyle = colors.body;
     this.ctx.fillRect(x, y, size, size);
     this.ctx.strokeStyle = colors.outline;
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(x, y, size, size);
+    this.ctx.restore();
   }
 
   private drawUI(gameState: GameState): void {
@@ -214,8 +224,9 @@ export class Renderer {
     this.ctx.textAlign = 'left';
 
     let yOffset = this.height - 50;
-    this.ctx.fillText(`Wave: ${gameState.wave} | Score: ${gameState.score}`, 10, yOffset);
-    this.ctx.fillText(`Enemies: ${Object.keys(gameState.enemies).length} | Players: ${Object.keys(gameState.players).length}`, 10, yOffset + 15);
+    this.ctx.fillText(`波次：${gameState.wave} | 分数：${gameState.score}`, 10, yOffset);
+    this.ctx.fillText(`敌人：${Object.keys(gameState.enemies).length} | 玩家：${Object.keys(gameState.players).length}`, 10, yOffset + 15);
+    this.ctx.fillText(`击杀：${gameState.waveKills}/${gameState.killsToNextWave}`, 10, yOffset + 30);
   }
 
   private getPlayerColor(player: Player): { body: string; face: string } {
@@ -247,8 +258,38 @@ export class Renderer {
       damage: { body: '#ff4500', outline: '#ff0000' },
       speed: { body: '#00ff00', outline: '#00aa00' },
       armor: { body: '#c0c0c0', outline: '#808080' },
+      range: { body: '#55d6ff', outline: '#008fd1' },
+      vitality: { body: '#b86bff', outline: '#7d35d8' },
     };
     return colors[type] || { body: '#ffffff', outline: '#cccccc' };
+  }
+
+  private drawEnemyRankMarker(enemy: Enemy): void {
+    if (enemy.rank === 'normal') return;
+
+    const centerX = enemy.x + enemy.width / 2;
+    const markerY = enemy.y - 14;
+    const color = enemy.rank === 'boss' ? '#ffcf5a' : '#b86bff';
+
+    this.ctx.save();
+    this.ctx.fillStyle = color;
+    this.ctx.strokeStyle = '#111111';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.moveTo(centerX, markerY - 5);
+    this.ctx.lineTo(centerX + 6, markerY);
+    this.ctx.lineTo(centerX, markerY + 5);
+    this.ctx.lineTo(centerX - 6, markerY);
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    if (enemy.rank === 'boss') {
+      this.ctx.strokeStyle = '#ffffff';
+      this.ctx.lineWidth = 1;
+      this.ctx.strokeRect(enemy.x - 4, enemy.y - 4, enemy.width + 8, enemy.height + 8);
+    }
+    this.ctx.restore();
   }
 
   private loadSprites(): void {
@@ -362,9 +403,9 @@ export class Renderer {
   private drawAttackEvents(attacks: AttackEvent[]): void {
     attacks.forEach((attack) => {
       const age = Date.now() - attack.createdAt;
-      if (age > 280) return;
+      if (age > ATTACK_EVENT_TTL) return;
 
-      const progress = age / 280;
+      const progress = age / ATTACK_EVENT_TTL;
       const alpha = 1 - progress;
       const palette = this.getWeaponEffectColors(attack.weapon, attack.hit);
 
@@ -375,6 +416,7 @@ export class Renderer {
       this.ctx.shadowColor = palette.glow;
       this.ctx.shadowBlur = attack.hit ? 12 : 5;
 
+      this.drawAttackSector(attack.x, attack.y, attack.direction, attack.range, palette.primary, 0.16, progress);
       this.drawWeaponSweep(attack, palette.primary, 10, progress);
       this.drawWeaponSweep(attack, palette.core, 4, progress);
 
@@ -388,15 +430,38 @@ export class Renderer {
 
   private drawWeaponSweep(attack: AttackEvent, color: string, width: number, progress: number): void {
     const start = this.getAttackAngles(attack.direction);
-    const sweep = 0.95;
-    const currentStart = start - sweep * (0.45 - progress * 0.35);
-    const currentEnd = start + sweep * (0.15 + progress * 0.55);
+    const sweepProgress = 0.45 + progress * 0.55;
+    const currentStart = start - ATTACK_HALF_ANGLE;
+    const currentEnd = currentStart + ATTACK_HALF_ANGLE * 2 * sweepProgress;
 
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = width;
     this.ctx.beginPath();
     this.ctx.arc(attack.x, attack.y, attack.range, currentStart, currentEnd);
     this.ctx.stroke();
+  }
+
+  private drawAttackSector(
+    x: number,
+    y: number,
+    direction: 'up' | 'down' | 'left' | 'right',
+    range: number,
+    color: string,
+    alpha: number,
+    progress: number
+  ): void {
+    const centerAngle = this.getAttackAngles(direction);
+    const radius = range * (0.92 + progress * 0.08);
+
+    this.ctx.save();
+    this.ctx.globalAlpha *= alpha;
+    this.ctx.fillStyle = color;
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y);
+    this.ctx.arc(x, y, radius, centerAngle - ATTACK_HALF_ANGLE, centerAngle + ATTACK_HALF_ANGLE);
+    this.ctx.closePath();
+    this.ctx.fill();
+    this.ctx.restore();
   }
 
   private drawHitBurst(attack: AttackEvent, color: string, progress: number): void {
@@ -423,18 +488,17 @@ export class Renderer {
     this.ctx.strokeStyle = 'rgba(255, 230, 142, 0.35)';
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
-
-    if (player.direction === 'left') {
-      this.ctx.arc(centerX, centerY, range, Math.PI * 0.72, Math.PI * 1.28);
-    } else if (player.direction === 'right') {
-      this.ctx.arc(centerX, centerY, range, Math.PI * -0.28, Math.PI * 0.28);
-    } else if (player.direction === 'up') {
-      this.ctx.arc(centerX, centerY, range, Math.PI * 1.22, Math.PI * 1.78);
-    } else {
-      this.ctx.arc(centerX, centerY, range, Math.PI * 0.22, Math.PI * 0.78);
-    }
+    const centerAngle = this.getAttackAngles(player.direction);
+    this.ctx.arc(centerX, centerY, range, centerAngle - ATTACK_HALF_ANGLE, centerAngle + ATTACK_HALF_ANGLE);
 
     this.ctx.stroke();
+    this.ctx.globalAlpha = 0.12;
+    this.ctx.fillStyle = '#ffe68e';
+    this.ctx.beginPath();
+    this.ctx.moveTo(centerX, centerY);
+    this.ctx.arc(centerX, centerY, range, centerAngle - ATTACK_HALF_ANGLE, centerAngle + ATTACK_HALF_ANGLE);
+    this.ctx.closePath();
+    this.ctx.fill();
     this.ctx.restore();
   }
 
@@ -445,7 +509,7 @@ export class Renderer {
       case 'right':
         return 0;
       case 'up':
-        return Math.PI * 1.5;
+        return -Math.PI / 2;
       case 'down':
         return Math.PI * 0.5;
     }

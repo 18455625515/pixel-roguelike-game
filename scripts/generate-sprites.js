@@ -6,6 +6,7 @@ const FRAME = 32;
 const COLUMNS = ['idle', 'walk1', 'walk2', 'attack'];
 const DIRECTIONS = ['down', 'left', 'right', 'up'];
 const OUT_DIR = path.join(__dirname, '..', 'public', 'assets', 'sprites');
+const EFFECT_OUT_DIR = path.join(__dirname, '..', 'public', 'assets', 'effects');
 const TILE_OUT_DIR = path.join(__dirname, '..', 'public', 'assets', 'tiles');
 
 const crcTable = new Uint32Array(256);
@@ -114,6 +115,15 @@ const colors = {
   shadow: [47, 39, 55, 180],
   eye: [255, 250, 214, 255],
   sword: [214, 228, 232, 255],
+  spear: [176, 135, 78, 255],
+  bow: [116, 76, 45, 255],
+  arrow: [225, 218, 178, 255],
+  gold: [248, 196, 64, 255],
+  blue: [67, 140, 222, 255],
+  red: [221, 80, 62, 255],
+  green: [89, 174, 85, 255],
+  leather: [118, 73, 53, 255],
+  steel: [164, 174, 178, 255],
   player: {
     skin: [219, 171, 120, 255],
     hair: [74, 49, 45, 255],
@@ -121,6 +131,88 @@ const colors = {
     trim: [248, 196, 64, 255],
     pants: [42, 75, 117, 255],
     boots: [69, 45, 35, 255],
+  },
+  commander: {
+    skin: [226, 178, 126, 255],
+    hair: [54, 42, 54, 255],
+    tunic: [52, 91, 168, 255],
+    trim: [248, 196, 64, 255],
+    pants: [36, 45, 78, 255],
+    boots: [69, 45, 35, 255],
+  },
+  worker: {
+    skin: [219, 171, 120, 255],
+    hair: [91, 62, 46, 255],
+    tunic: [139, 100, 62, 255],
+    trim: [192, 145, 83, 255],
+    pants: [70, 82, 83, 255],
+    boots: [67, 48, 39, 255],
+  },
+  farmer: {
+    skin: [221, 175, 121, 255],
+    hair: [118, 79, 47, 255],
+    tunic: [77, 143, 79, 255],
+    trim: [221, 184, 95, 255],
+    pants: [88, 75, 55, 255],
+    boots: [74, 51, 38, 255],
+  },
+  trader: {
+    skin: [225, 177, 126, 255],
+    hair: [80, 52, 43, 255],
+    tunic: [144, 73, 149, 255],
+    trim: [248, 196, 64, 255],
+    pants: [57, 56, 88, 255],
+    boots: [69, 45, 35, 255],
+  },
+  swordsman: {
+    skin: [220, 172, 121, 255],
+    hair: [63, 51, 48, 255],
+    tunic: [117, 132, 144, 255],
+    trim: [196, 203, 199, 255],
+    pants: [50, 69, 91, 255],
+    boots: [57, 43, 36, 255],
+  },
+  spearman: {
+    skin: [220, 172, 121, 255],
+    hair: [75, 53, 42, 255],
+    tunic: [91, 119, 71, 255],
+    trim: [164, 154, 128, 255],
+    pants: [52, 75, 58, 255],
+    boots: [65, 45, 35, 255],
+  },
+  archer: {
+    skin: [220, 172, 121, 255],
+    hair: [62, 77, 44, 255],
+    tunic: [57, 116, 86, 255],
+    trim: [184, 130, 78, 255],
+    pants: [58, 68, 54, 255],
+    boots: [74, 51, 38, 255],
+  },
+  cavalry: {
+    skin: [220, 172, 121, 255],
+    hair: [61, 47, 41, 255],
+    tunic: [157, 61, 65, 255],
+    trim: [226, 187, 92, 255],
+    pants: [61, 59, 73, 255],
+    boots: [54, 38, 34, 255],
+    horse: [113, 76, 51, 255],
+    horseDark: [67, 48, 39, 255],
+  },
+  engineer: {
+    skin: [219, 171, 120, 255],
+    hair: [74, 49, 45, 255],
+    tunic: [186, 116, 55, 255],
+    trim: [216, 187, 94, 255],
+    pants: [72, 78, 82, 255],
+    boots: [69, 45, 35, 255],
+  },
+  guard: {
+    skin: [220, 172, 121, 255],
+    hair: [51, 50, 56, 255],
+    tunic: [82, 97, 119, 255],
+    trim: [197, 203, 207, 255],
+    pants: [43, 53, 67, 255],
+    boots: [57, 43, 36, 255],
   },
   goblin: {
     skin: [103, 177, 83, 255],
@@ -219,6 +311,120 @@ function drawHumanoid(surface, originX, originY, direction, frame, palette) {
   }
 }
 
+function drawTool(surface, originX, originY, direction, frame, tool) {
+  const attacking = frame === 'attack';
+  if (!attacking && tool !== 'shield') return;
+
+  if (tool === 'shield') {
+    const shieldX = direction === 'left' ? originX + 7 : direction === 'right' ? originX + 21 : originX + 6;
+    const shieldY = direction === 'up' ? originY + 11 : originY + 15;
+    surface.rect(shieldX, shieldY, 5, 8, colors.outline);
+    surface.rect(shieldX + 1, shieldY + 1, 3, 6, colors.steel);
+  }
+
+  if (tool === 'sword') {
+    if (direction === 'left') {
+      surface.rect(originX + 1, originY + 13, 10, 2, colors.sword);
+      surface.rect(originX + 3, originY + 11, 2, 6, colors.sword);
+    } else if (direction === 'right') {
+      surface.rect(originX + 21, originY + 13, 10, 2, colors.sword);
+      surface.rect(originX + 27, originY + 11, 2, 6, colors.sword);
+    } else if (direction === 'up') {
+      surface.rect(originX + 15, originY + 0, 2, 9, colors.sword);
+      surface.rect(originX + 13, originY + 1, 6, 2, colors.sword);
+    } else {
+      surface.rect(originX + 15, originY + 19, 2, 11, colors.sword);
+      surface.rect(originX + 13, originY + 25, 6, 2, colors.sword);
+    }
+  }
+
+  if (tool === 'spear') {
+    if (direction === 'left') {
+      surface.rect(originX + 0, originY + 12, 16, 2, colors.spear);
+      surface.rect(originX + 0, originY + 11, 3, 4, colors.steel);
+    } else if (direction === 'right') {
+      surface.rect(originX + 16, originY + 12, 16, 2, colors.spear);
+      surface.rect(originX + 29, originY + 11, 3, 4, colors.steel);
+    } else if (direction === 'up') {
+      surface.rect(originX + 15, originY + 0, 2, 17, colors.spear);
+      surface.rect(originX + 14, originY + 0, 4, 3, colors.steel);
+    } else {
+      surface.rect(originX + 15, originY + 15, 2, 17, colors.spear);
+      surface.rect(originX + 14, originY + 29, 4, 3, colors.steel);
+    }
+  }
+
+  if (tool === 'bow') {
+    const bowX = direction === 'left' ? originX + 4 : direction === 'right' ? originX + 24 : originX + 22;
+    surface.rect(bowX, originY + 9, 2, 13, colors.bow);
+    surface.rect(bowX + (direction === 'left' ? -3 : 2), originY + 14, 5, 1, colors.arrow);
+  }
+
+  if (tool === 'hammer') {
+    const x = direction === 'left' ? originX + 3 : direction === 'right' ? originX + 23 : originX + 19;
+    surface.rect(x, originY + 11, 3, 13, colors.spear);
+    surface.rect(x - 2, originY + 9, 7, 4, colors.steel);
+  }
+
+  if (tool === 'banner') {
+    surface.rect(originX + 23, originY + 3, 2, 22, colors.spear);
+    surface.rect(originX + 25, originY + 4, 6, 8, colors.red);
+    surface.rect(originX + 25, originY + 7, 6, 2, colors.gold);
+  }
+}
+
+function drawSpecialHumanoid(surface, originX, originY, direction, frame, palette, role) {
+  drawHumanoid(surface, originX, originY, direction, frame, palette);
+
+  if (role === 'commander') {
+    surface.rect(originX + 9, originY + 3, 14, 3, colors.gold);
+    surface.rect(originX + 13, originY + 1, 6, 3, colors.gold);
+    drawTool(surface, originX, originY, direction, frame, 'banner');
+  } else if (role === 'worker') {
+    drawTool(surface, originX, originY, direction, frame, 'hammer');
+  } else if (role === 'farmer') {
+    surface.rect(originX + 7, originY + 4, 18, 3, [216, 179, 92, 255]);
+    surface.rect(originX + 10, originY + 2, 12, 3, [195, 151, 74, 255]);
+    drawTool(surface, originX, originY, direction, frame, 'spear');
+  } else if (role === 'trader') {
+    surface.rect(originX + 23, originY + 16, 5, 8, colors.outline);
+    surface.rect(originX + 24, originY + 17, 3, 6, colors.gold);
+  } else if (role === 'swordsman') {
+    drawTool(surface, originX, originY, direction, frame, 'shield');
+    drawTool(surface, originX, originY, direction, frame, 'sword');
+  } else if (role === 'spearman') {
+    drawTool(surface, originX, originY, direction, frame, 'spear');
+  } else if (role === 'archer') {
+    drawTool(surface, originX, originY, direction, frame, 'bow');
+  } else if (role === 'engineer') {
+    drawTool(surface, originX, originY, direction, frame, 'hammer');
+  } else if (role === 'guard') {
+    drawTool(surface, originX, originY, direction, frame, 'shield');
+    drawTool(surface, originX, originY, direction, frame, 'spear');
+  }
+}
+
+function drawCavalry(surface, originX, originY, direction, frame, palette) {
+  const step = frame === 'walk1' ? -1 : frame === 'walk2' ? 1 : 0;
+  surface.rect(originX + 5, originY + 28, 22, 2, colors.shadow);
+  surface.rect(originX + 5, originY + 17, 22, 8, colors.outline);
+  surface.rect(originX + 6, originY + 18, 20, 6, palette.horse);
+  surface.rect(originX + 21, originY + 12, 7, 8, colors.outline);
+  surface.rect(originX + 22, originY + 13, 5, 6, palette.horse);
+  surface.rect(originX + 8, originY + 24, 4, 5 + Math.max(step, 0), colors.outline);
+  surface.rect(originX + 21, originY + 24, 4, 5 + Math.max(-step, 0), colors.outline);
+  surface.rect(originX + 9, originY + 24, 2, 4 + Math.max(step, 0), palette.horseDark);
+  surface.rect(originX + 22, originY + 24, 2, 4 + Math.max(-step, 0), palette.horseDark);
+  surface.rect(originX + 13, originY + 9, 9, 10, colors.outline);
+  surface.rect(originX + 14, originY + 10, 7, 8, palette.tunic);
+  surface.rect(originX + 13, originY + 4, 10, 8, colors.outline);
+  surface.rect(originX + 14, originY + 5, 8, 6, palette.skin);
+  surface.rect(originX + 13, originY + 4, 10, 3, palette.hair);
+  if (frame === 'attack') {
+    drawTool(surface, originX, originY, direction, frame, 'spear');
+  }
+}
+
 function drawMonster(surface, originX, originY, direction, frame, palette, kind) {
   const step = frame === 'walk1' ? -1 : frame === 'walk2' ? 1 : 0;
   const attacking = frame === 'attack';
@@ -297,6 +503,7 @@ function makeSheet(name, drawer) {
 }
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
+fs.mkdirSync(EFFECT_OUT_DIR, { recursive: true });
 fs.mkdirSync(TILE_OUT_DIR, { recursive: true });
 
 const sheets = {
@@ -314,6 +521,48 @@ const sheets = {
   }),
   dragon: makeSheet('dragon', (surface, x, y, direction, frame) => {
     drawMonster(surface, x, y, direction, frame, colors.dragon, 'dragon');
+  }),
+  commander: makeSheet('commander', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.commander, 'commander');
+  }),
+  worker: makeSheet('worker', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.worker, 'worker');
+  }),
+  woodcutter: makeSheet('woodcutter', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.worker, 'worker');
+    surface.rect(x + 4, y + 24, 6, 3, forest.leafLight);
+  }),
+  stonecutter: makeSheet('stonecutter', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.worker, 'worker');
+    surface.rect(x + 4, y + 24, 6, 4, forest.stone);
+  }),
+  miner: makeSheet('miner', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.worker, 'worker');
+    surface.rect(x + 4, y + 24, 6, 4, colors.steel);
+  }),
+  farmer: makeSheet('farmer', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.farmer, 'farmer');
+  }),
+  trader: makeSheet('trader', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.trader, 'trader');
+  }),
+  swordsman: makeSheet('swordsman', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.swordsman, 'swordsman');
+  }),
+  spearman: makeSheet('spearman', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.spearman, 'spearman');
+  }),
+  archer: makeSheet('archer', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.archer, 'archer');
+  }),
+  cavalry: makeSheet('cavalry', (surface, x, y, direction, frame) => {
+    drawCavalry(surface, x, y, direction, frame, colors.cavalry);
+  }),
+  engineer: makeSheet('engineer', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.engineer, 'engineer');
+  }),
+  guard: makeSheet('guard', (surface, x, y, direction, frame) => {
+    drawSpecialHumanoid(surface, x, y, direction, frame, colors.guard, 'guard');
   }),
 };
 
@@ -387,5 +636,68 @@ function makeForestTiles() {
 
 makeForestTiles();
 
+function drawSlash(surface, x, y, color, frame) {
+  const offset = frame * 2;
+  for (let i = 0; i < 16; i++) {
+    surface.setPixel(x + 8 + i, y + 22 - i + offset, color);
+    surface.setPixel(x + 9 + i, y + 22 - i + offset, color);
+  }
+  surface.rect(x + 12, y + 12 + offset, 12, 2, [255, 255, 255, 210]);
+}
+
+function drawSpearThrust(surface, x, y, color, frame) {
+  const reach = 8 + frame * 4;
+  surface.rect(x + 5, y + 15, reach + 10, 2, color);
+  surface.rect(x + reach + 14, y + 13, 4, 6, [235, 240, 230, 240]);
+}
+
+function drawArrowShot(surface, x, y, color, frame) {
+  const start = 6 + frame * 4;
+  surface.rect(x + start, y + 15, 18, 1, color);
+  surface.rect(x + start + 16, y + 13, 3, 5, [235, 240, 230, 240]);
+  surface.rect(x + start, y + 13, 3, 5, [116, 76, 45, 230]);
+}
+
+function drawCommandPulse(surface, x, y, color, frame) {
+  const radius = 5 + frame * 4;
+  surface.rect(x + 15 - radius, y + 15, radius * 2, 1, color);
+  surface.rect(x + 15, y + 15 - radius, 1, radius * 2, color);
+  surface.rect(x + 15 - Math.floor(radius * 0.7), y + 15 - Math.floor(radius * 0.7), 2, 2, color);
+  surface.rect(x + 15 + Math.floor(radius * 0.7), y + 15 + Math.floor(radius * 0.7), 2, 2, color);
+  surface.rect(x + 15 + Math.floor(radius * 0.7), y + 15 - Math.floor(radius * 0.7), 2, 2, color);
+  surface.rect(x + 15 - Math.floor(radius * 0.7), y + 15 + Math.floor(radius * 0.7), 2, 2, color);
+}
+
+function drawHitSpark(surface, x, y, color, frame) {
+  const size = 4 + frame * 2;
+  surface.rect(x + 16 - size, y + 15, size * 2, 2, color);
+  surface.rect(x + 15, y + 16 - size, 2, size * 2, color);
+  surface.rect(x + 16 - frame, y + 16 - frame, frame * 2 + 1, frame * 2 + 1, [255, 255, 255, 220]);
+}
+
+function makeEffects() {
+  const effects = ['slash', 'thrust', 'arrow', 'command', 'hit'];
+  const surface = new Surface(FRAME * 4, FRAME * effects.length);
+  for (let row = 0; row < effects.length; row++) {
+    for (let frame = 0; frame < 4; frame++) {
+      const x = frame * FRAME;
+      const y = row * FRAME;
+      if (effects[row] === 'slash') drawSlash(surface, x, y, [255, 218, 107, 230], frame);
+      if (effects[row] === 'thrust') drawSpearThrust(surface, x, y, [199, 154, 91, 230], frame);
+      if (effects[row] === 'arrow') drawArrowShot(surface, x, y, [225, 218, 178, 230], frame);
+      if (effects[row] === 'command') drawCommandPulse(surface, x, y, [80, 217, 255, 210], frame);
+      if (effects[row] === 'hit') drawHitSpark(surface, x, y, [255, 83, 91, 230], frame);
+    }
+  }
+  fs.writeFileSync(path.join(EFFECT_OUT_DIR, 'combat-effects.png'), surface.toPng());
+  fs.writeFileSync(
+    path.join(EFFECT_OUT_DIR, 'manifest.json'),
+    `${JSON.stringify({ frameWidth: FRAME, frameHeight: FRAME, columns: ['frame0', 'frame1', 'frame2', 'frame3'], effects, sheet: 'combat-effects.png' }, null, 2)}\n`
+  );
+}
+
+makeEffects();
+
 console.log(`Generated ${Object.keys(sheets).length} sprite sheets in ${OUT_DIR}`);
+console.log(`Generated combat effects in ${EFFECT_OUT_DIR}`);
 console.log(`Generated forest tiles in ${TILE_OUT_DIR}`);
