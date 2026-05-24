@@ -1,0 +1,3755 @@
+{
+  "generatedAt": "2026-05-22T17:59:19.661Z",
+  "method": "grid-4x4-exact-cell",
+  "targetFrameSize": "native-cell",
+  "rebuildSheet": false,
+  "dryRun": false,
+  "inputDir": "public\\assets\\generated-openai\\sprites-transparent",
+  "outputDir": "public\\assets\\sprites\\frames",
+  "sprites": [
+    {
+      "status": "ok",
+      "name": "archer",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\archer.png",
+      "outputDir": "public\\assets\\sprites\\frames\\archer",
+      "sourceSize": {
+        "width": 923,
+        "height": 877
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "231x219",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "231x219",
+          "source": {
+            "x": 231,
+            "y": 0,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "230x219",
+          "source": {
+            "x": 462,
+            "y": 0,
+            "width": 230,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "231x219",
+          "source": {
+            "x": 692,
+            "y": 0,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "231x220",
+          "source": {
+            "x": 0,
+            "y": 219,
+            "width": 231,
+            "height": 220
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "231x220",
+          "source": {
+            "x": 231,
+            "y": 219,
+            "width": 231,
+            "height": 220
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "230x220",
+          "source": {
+            "x": 462,
+            "y": 219,
+            "width": 230,
+            "height": 220
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "231x220",
+          "source": {
+            "x": 692,
+            "y": 219,
+            "width": 231,
+            "height": 220
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "231x219",
+          "source": {
+            "x": 0,
+            "y": 439,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "231x219",
+          "source": {
+            "x": 231,
+            "y": 439,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "230x219",
+          "source": {
+            "x": 462,
+            "y": 439,
+            "width": 230,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "231x219",
+          "source": {
+            "x": 692,
+            "y": 439,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "231x219",
+          "source": {
+            "x": 0,
+            "y": 658,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "231x219",
+          "source": {
+            "x": 231,
+            "y": 658,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "230x219",
+          "source": {
+            "x": 462,
+            "y": 658,
+            "width": 230,
+            "height": 219
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "231x219",
+          "source": {
+            "x": 692,
+            "y": 658,
+            "width": 231,
+            "height": 219
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\archer\\idle_down.png",
+        "public\\assets\\sprites\\frames\\archer\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\archer\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\archer\\attack_down.png",
+        "public\\assets\\sprites\\frames\\archer\\idle_left.png",
+        "public\\assets\\sprites\\frames\\archer\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\archer\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\archer\\attack_left.png",
+        "public\\assets\\sprites\\frames\\archer\\idle_right.png",
+        "public\\assets\\sprites\\frames\\archer\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\archer\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\archer\\attack_right.png",
+        "public\\assets\\sprites\\frames\\archer\\idle_up.png",
+        "public\\assets\\sprites\\frames\\archer\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\archer\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\archer\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "cavalry",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\cavalry.png",
+      "outputDir": "public\\assets\\sprites\\frames\\cavalry",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\cavalry\\idle_down.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\cavalry\\attack_down.png",
+        "public\\assets\\sprites\\frames\\cavalry\\idle_left.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\cavalry\\attack_left.png",
+        "public\\assets\\sprites\\frames\\cavalry\\idle_right.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\cavalry\\attack_right.png",
+        "public\\assets\\sprites\\frames\\cavalry\\idle_up.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\cavalry\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\cavalry\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "commander",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\commander.png",
+      "outputDir": "public\\assets\\sprites\\frames\\commander",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\commander\\idle_down.png",
+        "public\\assets\\sprites\\frames\\commander\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\commander\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\commander\\attack_down.png",
+        "public\\assets\\sprites\\frames\\commander\\idle_left.png",
+        "public\\assets\\sprites\\frames\\commander\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\commander\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\commander\\attack_left.png",
+        "public\\assets\\sprites\\frames\\commander\\idle_right.png",
+        "public\\assets\\sprites\\frames\\commander\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\commander\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\commander\\attack_right.png",
+        "public\\assets\\sprites\\frames\\commander\\idle_up.png",
+        "public\\assets\\sprites\\frames\\commander\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\commander\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\commander\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "dragon",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\dragon.png",
+      "outputDir": "public\\assets\\sprites\\frames\\dragon",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\dragon\\idle_down.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\dragon\\attack_down.png",
+        "public\\assets\\sprites\\frames\\dragon\\idle_left.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\dragon\\attack_left.png",
+        "public\\assets\\sprites\\frames\\dragon\\idle_right.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\dragon\\attack_right.png",
+        "public\\assets\\sprites\\frames\\dragon\\idle_up.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\dragon\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\dragon\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "engineer",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\engineer.png",
+      "outputDir": "public\\assets\\sprites\\frames\\engineer",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\engineer\\idle_down.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\engineer\\attack_down.png",
+        "public\\assets\\sprites\\frames\\engineer\\idle_left.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\engineer\\attack_left.png",
+        "public\\assets\\sprites\\frames\\engineer\\idle_right.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\engineer\\attack_right.png",
+        "public\\assets\\sprites\\frames\\engineer\\idle_up.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\engineer\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\engineer\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "farmer",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\farmer.png",
+      "outputDir": "public\\assets\\sprites\\frames\\farmer",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\farmer\\idle_down.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\farmer\\attack_down.png",
+        "public\\assets\\sprites\\frames\\farmer\\idle_left.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\farmer\\attack_left.png",
+        "public\\assets\\sprites\\frames\\farmer\\idle_right.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\farmer\\attack_right.png",
+        "public\\assets\\sprites\\frames\\farmer\\idle_up.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\farmer\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\farmer\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "goblin",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\goblin.png",
+      "outputDir": "public\\assets\\sprites\\frames\\goblin",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\goblin\\idle_down.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\goblin\\attack_down.png",
+        "public\\assets\\sprites\\frames\\goblin\\idle_left.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\goblin\\attack_left.png",
+        "public\\assets\\sprites\\frames\\goblin\\idle_right.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\goblin\\attack_right.png",
+        "public\\assets\\sprites\\frames\\goblin\\idle_up.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\goblin\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\goblin\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "guard",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\guard.png",
+      "outputDir": "public\\assets\\sprites\\frames\\guard",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\guard\\idle_down.png",
+        "public\\assets\\sprites\\frames\\guard\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\guard\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\guard\\attack_down.png",
+        "public\\assets\\sprites\\frames\\guard\\idle_left.png",
+        "public\\assets\\sprites\\frames\\guard\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\guard\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\guard\\attack_left.png",
+        "public\\assets\\sprites\\frames\\guard\\idle_right.png",
+        "public\\assets\\sprites\\frames\\guard\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\guard\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\guard\\attack_right.png",
+        "public\\assets\\sprites\\frames\\guard\\idle_up.png",
+        "public\\assets\\sprites\\frames\\guard\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\guard\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\guard\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "miner",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\miner.png",
+      "outputDir": "public\\assets\\sprites\\frames\\miner",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\miner\\idle_down.png",
+        "public\\assets\\sprites\\frames\\miner\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\miner\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\miner\\attack_down.png",
+        "public\\assets\\sprites\\frames\\miner\\idle_left.png",
+        "public\\assets\\sprites\\frames\\miner\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\miner\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\miner\\attack_left.png",
+        "public\\assets\\sprites\\frames\\miner\\idle_right.png",
+        "public\\assets\\sprites\\frames\\miner\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\miner\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\miner\\attack_right.png",
+        "public\\assets\\sprites\\frames\\miner\\idle_up.png",
+        "public\\assets\\sprites\\frames\\miner\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\miner\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\miner\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "orc",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\orc.png",
+      "outputDir": "public\\assets\\sprites\\frames\\orc",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\orc\\idle_down.png",
+        "public\\assets\\sprites\\frames\\orc\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\orc\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\orc\\attack_down.png",
+        "public\\assets\\sprites\\frames\\orc\\idle_left.png",
+        "public\\assets\\sprites\\frames\\orc\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\orc\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\orc\\attack_left.png",
+        "public\\assets\\sprites\\frames\\orc\\idle_right.png",
+        "public\\assets\\sprites\\frames\\orc\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\orc\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\orc\\attack_right.png",
+        "public\\assets\\sprites\\frames\\orc\\idle_up.png",
+        "public\\assets\\sprites\\frames\\orc\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\orc\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\orc\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "player",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\player.png",
+      "outputDir": "public\\assets\\sprites\\frames\\player",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\player\\idle_down.png",
+        "public\\assets\\sprites\\frames\\player\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\player\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\player\\attack_down.png",
+        "public\\assets\\sprites\\frames\\player\\idle_left.png",
+        "public\\assets\\sprites\\frames\\player\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\player\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\player\\attack_left.png",
+        "public\\assets\\sprites\\frames\\player\\idle_right.png",
+        "public\\assets\\sprites\\frames\\player\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\player\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\player\\attack_right.png",
+        "public\\assets\\sprites\\frames\\player\\idle_up.png",
+        "public\\assets\\sprites\\frames\\player\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\player\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\player\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "spearman",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\spearman.png",
+      "outputDir": "public\\assets\\sprites\\frames\\spearman",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\spearman\\idle_down.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\spearman\\attack_down.png",
+        "public\\assets\\sprites\\frames\\spearman\\idle_left.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\spearman\\attack_left.png",
+        "public\\assets\\sprites\\frames\\spearman\\idle_right.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\spearman\\attack_right.png",
+        "public\\assets\\sprites\\frames\\spearman\\idle_up.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\spearman\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\spearman\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "stonecutter",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\stonecutter.png",
+      "outputDir": "public\\assets\\sprites\\frames\\stonecutter",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\stonecutter\\idle_down.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\attack_down.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\idle_left.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\attack_left.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\idle_right.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\attack_right.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\idle_up.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\stonecutter\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "swordsman",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\swordsman.png",
+      "outputDir": "public\\assets\\sprites\\frames\\swordsman",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\swordsman\\idle_down.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\swordsman\\attack_down.png",
+        "public\\assets\\sprites\\frames\\swordsman\\idle_left.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\swordsman\\attack_left.png",
+        "public\\assets\\sprites\\frames\\swordsman\\idle_right.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\swordsman\\attack_right.png",
+        "public\\assets\\sprites\\frames\\swordsman\\idle_up.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\swordsman\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\swordsman\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "trader",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\trader.png",
+      "outputDir": "public\\assets\\sprites\\frames\\trader",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\trader\\idle_down.png",
+        "public\\assets\\sprites\\frames\\trader\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\trader\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\trader\\attack_down.png",
+        "public\\assets\\sprites\\frames\\trader\\idle_left.png",
+        "public\\assets\\sprites\\frames\\trader\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\trader\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\trader\\attack_left.png",
+        "public\\assets\\sprites\\frames\\trader\\idle_right.png",
+        "public\\assets\\sprites\\frames\\trader\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\trader\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\trader\\attack_right.png",
+        "public\\assets\\sprites\\frames\\trader\\idle_up.png",
+        "public\\assets\\sprites\\frames\\trader\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\trader\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\trader\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "troll",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\troll.png",
+      "outputDir": "public\\assets\\sprites\\frames\\troll",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\troll\\idle_down.png",
+        "public\\assets\\sprites\\frames\\troll\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\troll\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\troll\\attack_down.png",
+        "public\\assets\\sprites\\frames\\troll\\idle_left.png",
+        "public\\assets\\sprites\\frames\\troll\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\troll\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\troll\\attack_left.png",
+        "public\\assets\\sprites\\frames\\troll\\idle_right.png",
+        "public\\assets\\sprites\\frames\\troll\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\troll\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\troll\\attack_right.png",
+        "public\\assets\\sprites\\frames\\troll\\idle_up.png",
+        "public\\assets\\sprites\\frames\\troll\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\troll\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\troll\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "woodcutter",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\woodcutter.png",
+      "outputDir": "public\\assets\\sprites\\frames\\woodcutter",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\woodcutter\\idle_down.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\attack_down.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\idle_left.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\attack_left.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\idle_right.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\attack_right.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\idle_up.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\woodcutter\\attack_up.png"
+      ]
+    },
+    {
+      "status": "ok",
+      "name": "worker",
+      "input": "public\\assets\\generated-openai\\sprites-transparent\\worker.png",
+      "outputDir": "public\\assets\\sprites\\frames\\worker",
+      "sourceSize": {
+        "width": 1024,
+        "height": 1024
+      },
+      "method": "grid-4x4-exact-cell",
+      "frameSize": "native-cell",
+      "frames": [
+        {
+          "name": "idle_down",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_down",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_down",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_down",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 0,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_left",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_left",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_left",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_left",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 256,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_right",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_right",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_right",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_right",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 512,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "idle_up",
+          "size": "256x256",
+          "source": {
+            "x": 0,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk1_up",
+          "size": "256x256",
+          "source": {
+            "x": 256,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "walk2_up",
+          "size": "256x256",
+          "source": {
+            "x": 512,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        },
+        {
+          "name": "attack_up",
+          "size": "256x256",
+          "source": {
+            "x": 768,
+            "y": 768,
+            "width": 256,
+            "height": 256
+          },
+          "trimBounds": null
+        }
+      ],
+      "writtenFrames": [
+        "public\\assets\\sprites\\frames\\worker\\idle_down.png",
+        "public\\assets\\sprites\\frames\\worker\\walk1_down.png",
+        "public\\assets\\sprites\\frames\\worker\\walk2_down.png",
+        "public\\assets\\sprites\\frames\\worker\\attack_down.png",
+        "public\\assets\\sprites\\frames\\worker\\idle_left.png",
+        "public\\assets\\sprites\\frames\\worker\\walk1_left.png",
+        "public\\assets\\sprites\\frames\\worker\\walk2_left.png",
+        "public\\assets\\sprites\\frames\\worker\\attack_left.png",
+        "public\\assets\\sprites\\frames\\worker\\idle_right.png",
+        "public\\assets\\sprites\\frames\\worker\\walk1_right.png",
+        "public\\assets\\sprites\\frames\\worker\\walk2_right.png",
+        "public\\assets\\sprites\\frames\\worker\\attack_right.png",
+        "public\\assets\\sprites\\frames\\worker\\idle_up.png",
+        "public\\assets\\sprites\\frames\\worker\\walk1_up.png",
+        "public\\assets\\sprites\\frames\\worker\\walk2_up.png",
+        "public\\assets\\sprites\\frames\\worker\\attack_up.png"
+      ]
+    }
+  ]
+}

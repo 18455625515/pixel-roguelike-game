@@ -3,9 +3,13 @@ import { Building, BuildingType, ResourceType, RtsGameState, TerrainType, Unit, 
 const SPRITE_COLUMNS = ['idle', 'walk1', 'walk2', 'attack'] as const;
 const SPRITE_DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
 const SPRITE_BASE_PATH = '/assets/sprites/';
+const EFFECT_BASE_PATH = '/assets/effects/';
+const EFFECT_COLUMNS = ['frame0', 'frame1', 'frame2', 'frame3'] as const;
+const EFFECT_ROWS = ['slash', 'thrust', 'arrow', 'command', 'hit'] as const;
 
 type SpriteColumn = (typeof SPRITE_COLUMNS)[number];
 type SpriteDirection = (typeof SPRITE_DIRECTIONS)[number];
+type EffectRow = (typeof EFFECT_ROWS)[number];
 
 const TERRAIN_COLORS: Record<TerrainType, string> = {
   grass: '#2f7d45',
@@ -25,6 +29,8 @@ const BUILDING_COLORS: Record<BuildingType, string> = {
   warehouse: '#a98761',
   barracks: '#8b5564',
   market: '#b58f4a',
+  smithy: '#8a5a44',
+  stable: '#6f5a3a',
   wall: '#8e9794',
   gate: '#7a5a42',
   bridge: '#9a6d41',
@@ -39,6 +45,8 @@ const BUILDING_LABELS: Record<BuildingType, string> = {
   warehouse: '仓库',
   barracks: '兵营',
   market: '市场',
+  smithy: '铁匠铺',
+  stable: '马厩',
   wall: '城墙',
   gate: '城门',
   bridge: '桥梁',
@@ -65,8 +73,11 @@ export class RtsRenderer {
   private ctx: CanvasRenderingContext2D;
   private width: number;
   private height: number;
-  private sprites: Partial<Record<UnitRole, HTMLImageElement>> = {};
+  private spriteSheets: Partial<Record<UnitRole, HTMLCanvasElement>> = {};
   private loadedSprites = new Set<UnitRole>();
+  private effectSheet: HTMLCanvasElement | null = null;
+  private combatEffectsLoaded = false;
+  private miniMapLastDraw = 0;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
@@ -74,6 +85,7 @@ export class RtsRenderer {
     this.height = height;
     this.ctx.imageSmoothingEnabled = false;
     this.loadSprites();
+    this.loadCombatEffects();
   }
 
   resize(width: number, height: number): void {
@@ -88,6 +100,10 @@ export class RtsRenderer {
     selection?: { active: boolean; startX: number; startY: number; endX: number; endY: number },
     buildPreview?: { type: BuildingType; x: number; y: number; valid: boolean }
   ): void {
+    const unitCount = Object.keys(state.units).length;
+    const perfLite = unitCount > 48;
+    const perfUltra = unitCount > 78;
+
     this.ctx.fillStyle = '#090b0e';
     this.ctx.fillRect(0, 0, this.width, this.height);
 
@@ -95,12 +111,21 @@ export class RtsRenderer {
     this.ctx.scale(camera.zoom, camera.zoom);
     this.ctx.translate(-camera.x, -camera.y);
 
-    this.drawTerrain(state, camera);
-    Object.values(state.buildings).forEach((building) => this.drawBuilding(state, building));
+    const bounds = this.getViewBounds(state, camera);
+    this.drawTerrain(state, camera, perfLite);
+    Object.values(state.buildings).forEach((building) => {
+      if (this.isInView(building.x, building.y, building.width, building.height, bounds)) {
+        this.drawBuilding(state, building, perfLite);
+      }
+    });
     if (buildPreview) this.drawBuildPreview(state, buildPreview);
-    this.drawOrderFeedback(state);
-    this.drawCombatEvents(state);
-    Object.values(state.units).forEach((unit) => this.drawUnit(state, unit));
+    if (!perfUltra) this.drawOrderFeedback(state);
+    if (!perfUltra) this.drawCombatEvents(state);
+    Object.values(state.units).forEach((unit) => {
+      if (this.isInView(unit.x, unit.y, unit.width, unit.height, bounds)) {
+        this.drawUnit(state, unit, perfLite, perfUltra);
+      }
+    });
 
     this.ctx.restore();
 
@@ -109,52 +134,113 @@ export class RtsRenderer {
     }
 
     this.drawHud(state);
-    this.drawMiniMap(state, camera);
+    const now = Date.now();
+    if (now - this.miniMapLastDraw > 200) {
+      this.miniMapLastDraw = now;
+      this.drawMiniMap(state, camera);
+    }
   }
 
-  private drawTerrain(state: RtsGameState, camera: { x: number; y: number; zoom: number }): void {
+  private getViewBounds(state: RtsGameState, camera: { x: number; y: number; zoom: number }) {
+    const margin = 64;
+    return {
+      left: camera.x - margin,
+      top: camera.y - margin,
+      right: camera.x + this.width / camera.zoom + margin,
+      bottom: camera.y + this.height / camera.zoom + margin,
+      mapWidth: state.mapWidth * state.tileSize,
+      mapHeight: state.mapHeight * state.tileSize,
+    };
+  }
+
+  private isInView(x: number, y: number, w: number, h: number, bounds: ReturnType<RtsRenderer['getViewBounds']>): boolean {
+    return x + w >= bounds.left && x <= bounds.right && y + h >= bounds.top && y <= bounds.bottom;
+  }
+
+  private isCoastTile(state: RtsGameState, x: number, y: number): boolean {
+    const neighbors = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    return neighbors.some(([dx, dy]) => {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= state.mapWidth || ny >= state.mapHeight) return true;
+      return state.tiles[ny * state.mapWidth + nx]?.terrain === 'water';
+    });
+  }
+
+  private drawTerrain(state: RtsGameState, camera: { x: number; y: number; zoom: number }, perfLite = false): void {
     const tileSize = state.tileSize;
+    const overlap = 1;
     const startX = Math.max(0, Math.floor(camera.x / tileSize) - 1);
     const startY = Math.max(0, Math.floor(camera.y / tileSize) - 1);
     const endX = Math.min(state.mapWidth, Math.ceil((camera.x + this.width / camera.zoom) / tileSize) + 1);
     const endY = Math.min(state.mapHeight, Math.ceil((camera.y + this.height / camera.zoom) / tileSize) + 1);
 
+    const bounds = this.getViewBounds(state, camera);
+    this.ctx.fillStyle = TERRAIN_COLORS.water;
+    this.ctx.fillRect(bounds.left, bounds.top, bounds.right - bounds.left, bounds.bottom - bounds.top);
+
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
         const tile = state.tiles[y * state.mapWidth + x];
-        this.ctx.fillStyle = TERRAIN_COLORS[tile.terrain];
-        this.ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        const screenX = Math.floor(x * tileSize);
+        const screenY = Math.floor(y * tileSize);
 
-        if (tile.terrain === 'forest') {
+        this.ctx.fillStyle = TERRAIN_COLORS[tile.terrain];
+        this.ctx.fillRect(screenX, screenY, tileSize + overlap, tileSize + overlap);
+
+        if (!perfLite && tile.terrain !== 'water' && this.isCoastTile(state, x, y)) {
+          this.ctx.fillStyle = '#4a6f4a';
+          this.ctx.fillRect(screenX, screenY + tileSize - 5, tileSize + overlap, 5);
+        }
+
+        if (!perfLite && tile.terrain === 'grass' && (x + y) % 5 === 0) {
+          this.ctx.fillStyle = 'rgba(0,0,0,0.06)';
+          this.ctx.fillRect(screenX, screenY, tileSize + overlap, 1);
+          this.ctx.fillRect(screenX, screenY, 1, tileSize + overlap);
+        }
+
+        if (!perfLite && tile.terrain === 'forest') {
           this.ctx.fillStyle = '#3fa35e';
-          this.ctx.fillRect(x * tileSize + 10, y * tileSize + 5, 12, 18);
+          this.ctx.fillRect(screenX + 10, screenY + 5, 12, 18);
           this.ctx.fillStyle = '#6b4b35';
-          this.ctx.fillRect(x * tileSize + 14, y * tileSize + 18, 4, 10);
-        } else if (tile.terrain === 'mountain') {
+          this.ctx.fillRect(screenX + 14, screenY + 18, 4, 10);
+        } else if (!perfLite && tile.terrain === 'mountain') {
           this.ctx.fillStyle = '#a7b0aa';
           this.ctx.beginPath();
-          this.ctx.moveTo(x * tileSize + 5, y * tileSize + 25);
-          this.ctx.lineTo(x * tileSize + 16, y * tileSize + 7);
-          this.ctx.lineTo(x * tileSize + 27, y * tileSize + 25);
+          this.ctx.moveTo(screenX + 5, screenY + 25);
+          this.ctx.lineTo(screenX + 16, screenY + 7);
+          this.ctx.lineTo(screenX + 27, screenY + 25);
           this.ctx.fill();
-        } else if (tile.terrain === 'bridge') {
+          if (tile.resource === 'iron') {
+            this.ctx.fillStyle = '#4a4038';
+            this.ctx.fillRect(screenX + 11, screenY + 14, 10, 10);
+          } else if (tile.resource === 'stone') {
+            this.ctx.fillStyle = '#8a9098';
+            this.ctx.fillRect(screenX + 10, screenY + 13, 12, 8);
+          }
+        } else if (!perfLite && tile.terrain === 'bridge') {
           this.ctx.fillStyle = '#9a6d41';
-          this.ctx.fillRect(x * tileSize, y * tileSize + 8, tileSize, 16);
+          this.ctx.fillRect(screenX, screenY + 8, tileSize, 16);
           this.ctx.strokeStyle = '#4c3326';
           this.ctx.lineWidth = 2;
           this.ctx.beginPath();
-          this.ctx.moveTo(x * tileSize + 4, y * tileSize + 10);
-          this.ctx.lineTo(x * tileSize + 28, y * tileSize + 10);
-          this.ctx.moveTo(x * tileSize + 4, y * tileSize + 22);
-          this.ctx.lineTo(x * tileSize + 28, y * tileSize + 22);
+          this.ctx.moveTo(screenX + 4, screenY + 10);
+          this.ctx.lineTo(screenX + 28, screenY + 10);
+          this.ctx.moveTo(screenX + 4, screenY + 22);
+          this.ctx.lineTo(screenX + 28, screenY + 22);
           this.ctx.stroke();
-        } else if (tile.terrain === 'field') {
+        } else if (!perfLite && tile.terrain === 'field') {
           this.ctx.strokeStyle = 'rgba(70, 83, 36, 0.7)';
           this.ctx.lineWidth = 1;
           for (let i = 6; i < tileSize; i += 7) {
             this.ctx.beginPath();
-            this.ctx.moveTo(x * tileSize + i, y * tileSize + 3);
-            this.ctx.lineTo(x * tileSize + i - 5, y * tileSize + 29);
+            this.ctx.moveTo(screenX + i, screenY + 3);
+            this.ctx.lineTo(screenX + i - 5, screenY + 29);
             this.ctx.stroke();
           }
         }
@@ -162,7 +248,7 @@ export class RtsRenderer {
     }
   }
 
-  private drawBuilding(state: RtsGameState, building: Building): void {
+  private drawBuilding(state: RtsGameState, building: Building, perfLite = false): void {
     const faction = state.factions[building.factionId];
     if (!building.complete) {
       this.ctx.save();
@@ -197,24 +283,26 @@ export class RtsRenderer {
       this.ctx.moveTo(building.x + 3, building.y + building.height - 10);
       this.ctx.lineTo(building.x + building.width - 3, building.y + building.height - 10);
       this.ctx.stroke();
-    } else if (building.type === 'townHall') {
+    } else if (!perfLite && building.type === 'townHall') {
       this.drawCastleKeep(building);
-    } else if (building.type === 'barracks') {
+    } else if (!perfLite && building.type === 'barracks') {
       this.drawRoofedBuilding(building, '#71394a', '#c9d0cb');
-    } else if (building.type === 'market') {
+    } else if (!perfLite && building.type === 'market') {
       this.drawRoofedBuilding(building, '#b58f4a', '#f2d075');
-    } else if (building.type === 'warehouse') {
+    } else if (!perfLite && building.type === 'warehouse') {
       this.drawCrateBuilding(building);
-    } else if (building.type === 'farm') {
+    } else if (!perfLite && building.type === 'farm') {
       this.drawFarmBuilding(building);
     }
 
     if (!building.complete) {
       this.ctx.restore();
-      this.drawConstructionOverlay(building);
+      if (!perfLite) this.drawConstructionOverlay(building);
     }
 
-    this.drawHealthBar(building.x, building.y - 7, building.width, building.health, building.maxHealth, building.complete ? '#ff5261' : '#ffd166');
+    if (!perfLite) {
+      this.drawHealthBar(building.x, building.y - 7, building.width, building.health, building.maxHealth, building.complete ? '#ff5261' : '#ffd166');
+    }
   }
 
   private drawConstructionOverlay(building: Building): void {
@@ -295,9 +383,15 @@ export class RtsRenderer {
     }
   }
 
-  private drawUnit(state: RtsGameState, unit: Unit): void {
-    const frame = unit.order.type === 'attack' && unit.attackCooldown > 0.55 ? 'attack' : this.getCharacterFrame(unit.id, unit.direction);
-    if (!this.drawSprite(unit.role, unit.x, unit.y, unit.direction, frame)) {
+  private drawUnit(state: RtsGameState, unit: Unit, perfLite = false, perfUltra = false): void {
+    const useSprite = !perfUltra || unit.selected || unit.role === 'commander';
+    if (useSprite) {
+      const frame = unit.order.type === 'attack' && unit.attackCooldown > 0.55 ? 'attack' : this.getCharacterFrame(unit.id, unit.direction);
+      if (!this.drawSprite(unit.role, unit.x, unit.y, unit.direction, frame)) {
+        this.ctx.fillStyle = state.factions[unit.factionId]?.color ?? '#ffffff';
+        this.ctx.fillRect(unit.x, unit.y, unit.width, unit.height);
+      }
+    } else {
       this.ctx.fillStyle = state.factions[unit.factionId]?.color ?? '#ffffff';
       this.ctx.fillRect(unit.x, unit.y, unit.width, unit.height);
     }
@@ -314,8 +408,10 @@ export class RtsRenderer {
       this.ctx.strokeRect(unit.x - 5, unit.y - 5, unit.width + 10, unit.height + 10);
     }
 
-    this.drawCarryBadge(unit);
-    this.drawHealthBar(unit.x, unit.y - 7, unit.width, unit.health, unit.maxHealth, unit.factionId === 'player' ? '#39ff88' : '#ff5261');
+    if (!perfUltra || unit.selected) {
+      this.drawCarryBadge(unit);
+      this.drawHealthBar(unit.x, unit.y - 7, unit.width, unit.health, unit.maxHealth, unit.factionId === 'player' ? '#39ff88' : '#ff5261');
+    }
   }
 
   private drawCarryBadge(unit: Unit): void {
@@ -352,6 +448,8 @@ export class RtsRenderer {
       warehouse: { width: 2, height: 2 },
       barracks: { width: 3, height: 2 },
       market: { width: 3, height: 2 },
+      smithy: { width: 2, height: 2 },
+      stable: { width: 3, height: 2 },
       wall: { width: 1, height: 1 },
       gate: { width: 1, height: 1 },
       bridge: { width: 1, height: 1 },
@@ -497,6 +595,10 @@ export class RtsRenderer {
       this.ctx.globalAlpha = alpha;
 
       if (event.kind === 'arrow') {
+        if (this.drawEffectAlongLine('arrow', progress, event.x, event.y, event.targetX, event.targetY, 58, 26)) {
+          this.ctx.restore();
+          return;
+        }
         const x = event.x + (event.targetX - event.x) * progress;
         const y = event.y + (event.targetY - event.y) * progress;
         const angle = Math.atan2(event.targetY - event.y, event.targetX - event.x);
@@ -507,11 +609,25 @@ export class RtsRenderer {
         this.ctx.lineTo(x + Math.cos(angle) * 12, y + Math.sin(angle) * 12);
         this.ctx.stroke();
       } else if (event.kind === 'melee') {
+        if (this.drawEffectAt('slash', progress, event.targetX, event.targetY, 54, 54)) {
+          this.ctx.restore();
+          return;
+        }
         this.ctx.strokeStyle = '#ffd166';
         this.ctx.lineWidth = 6;
         this.ctx.beginPath();
         this.ctx.arc(event.targetX, event.targetY, 18 + progress * 10, -0.7, 1.3);
         this.ctx.stroke();
+      } else if (event.kind === 'hit') {
+        if (this.drawEffectAt('hit', progress, event.targetX, event.targetY, 44, 44)) {
+          this.ctx.restore();
+          return;
+        }
+      } else if (event.kind === 'command') {
+        if (this.drawEffectAt('command', progress, event.targetX, event.targetY, 48, 48)) {
+          this.ctx.restore();
+          return;
+        }
       } else if (event.kind === 'gather') {
         const color = event.resource ? this.getResourceColor(event.resource) : '#ffd166';
         this.ctx.strokeStyle = color;
@@ -558,6 +674,47 @@ export class RtsRenderer {
     });
   }
 
+  private drawEffectAlongLine(
+    effect: EffectRow,
+    progress: number,
+    startX: number,
+    startY: number,
+    targetX: number,
+    targetY: number,
+    width: number,
+    height: number
+  ): boolean {
+    const x = startX + (targetX - startX) * progress;
+    const y = startY + (targetY - startY) * progress;
+    const rotation = Math.atan2(targetY - startY, targetX - startX);
+    return this.drawEffectAt(effect, progress, x, y, width, height, rotation);
+  }
+
+  private drawEffectAt(effect: EffectRow, progress: number, x: number, y: number, width: number, height = width, rotation = 0): boolean {
+    if (!this.effectSheet || !this.combatEffectsLoaded) return false;
+
+    const frameSize = 32;
+    const frameIndex = Math.min(EFFECT_COLUMNS.length - 1, Math.floor(progress * EFFECT_COLUMNS.length));
+    const rowIndex = EFFECT_ROWS.indexOf(effect);
+
+    this.ctx.save();
+    this.ctx.translate(x, y);
+    this.ctx.rotate(rotation);
+    this.ctx.drawImage(
+      this.effectSheet,
+      frameIndex * frameSize,
+      rowIndex * frameSize,
+      frameSize,
+      frameSize,
+      -width / 2,
+      -height / 2,
+      width,
+      height
+    );
+    this.ctx.restore();
+    return true;
+  }
+
   private drawSelectionRect(selection: { startX: number; startY: number; endX: number; endY: number }): void {
     const x = Math.min(selection.startX, selection.endX);
     const y = Math.min(selection.startY, selection.endY);
@@ -570,6 +727,18 @@ export class RtsRenderer {
     this.ctx.strokeRect(x, y, width, height);
   }
 
+  private getPopulationHud(state: RtsGameState): { used: number; cap: number } {
+    const used = Object.values(state.units).filter((unit) => unit.factionId === 'player').length;
+    let cap = 12;
+    Object.values(state.buildings).forEach((building) => {
+      if (building.factionId !== 'player' || !building.complete) return;
+      if (building.type === 'townHall') cap += 10;
+      if (building.type === 'house') cap += 6;
+      if (building.type === 'farm') cap += 2;
+    });
+    return { used, cap };
+  }
+
   private drawHud(state: RtsGameState): void {
     const player = state.factions.player;
     this.ctx.fillStyle = 'rgba(7, 9, 12, 0.86)';
@@ -580,8 +749,9 @@ export class RtsRenderer {
     this.ctx.textAlign = 'left';
     const modeText = state.activeCommanderId ? '将领' : state.buildMode ? `建造 ${BUILDING_LABELS[state.buildMode]}` : '指挥';
     this.ctx.fillText(`第 ${state.day} 天   模式：${modeText}`, 12, 21);
+    const pop = this.getPopulationHud(state);
     this.ctx.fillText(
-      `粮食 ${Math.floor(player.resources.food)}  木材 ${Math.floor(player.resources.wood)}  石材 ${Math.floor(player.resources.stone)}  铁 ${Math.floor(player.resources.iron)}  金币 ${Math.floor(player.resources.gold)}  人口 ${Math.floor(player.resources.population)}`,
+      `粮食 ${Math.floor(player.resources.food)}  木材 ${Math.floor(player.resources.wood)}  石材 ${Math.floor(player.resources.stone)}  铁 ${Math.floor(player.resources.iron)}  金币 ${Math.floor(player.resources.gold)}  人口 ${pop.used}/${pop.cap}`,
       12,
       45
     );
@@ -647,24 +817,53 @@ export class RtsRenderer {
     this.ctx.restore();
   }
 
+  private buildSheetCanvas(image: HTMLImageElement, cols: number, rows: number, frameSize = 32): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
+    canvas.width = cols * frameSize;
+    canvas.height = rows * frameSize;
+    const sheetCtx = canvas.getContext('2d');
+    if (sheetCtx) {
+      sheetCtx.imageSmoothingEnabled = false;
+      sheetCtx.clearRect(0, 0, canvas.width, canvas.height);
+      sheetCtx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight, 0, 0, canvas.width, canvas.height);
+    }
+    return canvas;
+  }
+
   private loadSprites(): void {
     const roles: UnitRole[] = ['commander', 'worker', 'woodcutter', 'stonecutter', 'miner', 'farmer', 'trader', 'swordsman', 'spearman', 'archer', 'cavalry', 'engineer', 'guard'];
     roles.forEach((role) => {
       const image = new Image();
-      image.onload = () => this.loadedSprites.add(role);
+      image.onload = () => {
+        this.spriteSheets[role] = this.buildSheetCanvas(image, SPRITE_COLUMNS.length, SPRITE_DIRECTIONS.length);
+        this.loadedSprites.add(role);
+      };
+      image.onerror = () => {
+        console.warn(`Failed to load sprite: ${role}`);
+      };
       image.src = `${SPRITE_BASE_PATH}${role}.png`;
-      this.sprites[role] = image;
     });
   }
 
+  private loadCombatEffects(): void {
+    const image = new Image();
+    image.onload = () => {
+      this.effectSheet = this.buildSheetCanvas(image, EFFECT_COLUMNS.length, EFFECT_ROWS.length);
+      this.combatEffectsLoaded = true;
+    };
+    image.onerror = () => {
+      console.warn('Failed to load combat effects');
+    };
+    image.src = `${EFFECT_BASE_PATH}combat-effects.png`;
+  }
+
   private drawSprite(role: UnitRole, x: number, y: number, direction: SpriteDirection, frame: SpriteColumn): boolean {
-    const sprite = this.sprites[role];
-    if (!sprite || !this.loadedSprites.has(role)) return false;
-    const sourceWidth = sprite.naturalWidth / SPRITE_COLUMNS.length;
-    const sourceHeight = sprite.naturalHeight / SPRITE_DIRECTIONS.length;
-    const sourceX = SPRITE_COLUMNS.indexOf(frame) * sourceWidth;
-    const sourceY = SPRITE_DIRECTIONS.indexOf(direction) * sourceHeight;
-    this.ctx.drawImage(sprite, sourceX, sourceY, sourceWidth, sourceHeight, Math.round(x), Math.round(y), 32, 32);
+    const sheet = this.spriteSheets[role];
+    if (!sheet || !this.loadedSprites.has(role)) return false;
+    const frameSize = 32;
+    const sourceX = SPRITE_COLUMNS.indexOf(frame) * frameSize;
+    const sourceY = SPRITE_DIRECTIONS.indexOf(direction) * frameSize;
+    this.ctx.drawImage(sheet, sourceX, sourceY, frameSize, frameSize, Math.round(x), Math.round(y), frameSize, frameSize);
     return true;
   }
 

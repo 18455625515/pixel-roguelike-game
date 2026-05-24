@@ -1,16 +1,19 @@
 import { AttackEvent, GameState, Player, Enemy, Item } from '../shared/types';
 
 const TILE_SIZE = 32;
-const SPRITE_SIZE = 32;
 const SPRITE_BASE_PATH = '/assets/sprites/';
 const TILE_BASE_PATH = '/assets/tiles/';
 const SPRITE_COLUMNS = ['idle', 'walk1', 'walk2', 'attack'] as const;
 const SPRITE_DIRECTIONS = ['down', 'left', 'right', 'up'] as const;
+const EFFECT_BASE_PATH = '/assets/effects/';
+const EFFECT_COLUMNS = ['frame0', 'frame1', 'frame2', 'frame3'] as const;
+const EFFECT_ROWS = ['slash', 'thrust', 'arrow', 'command', 'hit'] as const;
 const ATTACK_HALF_ANGLE = Math.PI * 0.28;
 const ATTACK_EVENT_TTL = 280;
 
 type SpriteColumn = (typeof SPRITE_COLUMNS)[number];
 type SpriteDirection = (typeof SPRITE_DIRECTIONS)[number];
+type EffectRow = (typeof EFFECT_ROWS)[number];
 type SpriteName = 'player' | Enemy['type'];
 
 export class Renderer {
@@ -18,10 +21,12 @@ export class Renderer {
   private width: number;
   private height: number;
   private pixelSize = 2; // For pixel art scaling
-  private sprites: Partial<Record<SpriteName, HTMLImageElement>> = {};
+  private spriteSheets: Partial<Record<SpriteName, HTMLCanvasElement>> = {};
   private loadedSprites = new Set<SpriteName>();
   private forestTiles: HTMLImageElement | null = null;
   private forestTilesLoaded = false;
+  private effectSheet: HTMLCanvasElement | null = null;
+  private combatEffectsLoaded = false;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
@@ -30,6 +35,7 @@ export class Renderer {
     this.ctx.imageSmoothingEnabled = false;
     this.loadSprites();
     this.loadForestTiles();
+    this.loadCombatEffects();
   }
 
   render(gameState: GameState, currentPlayerId?: string | null, lastAttackTime = 0): void {
@@ -132,7 +138,7 @@ export class Renderer {
     image.onerror = () => {
       console.warn('Failed to load forest tiles');
     };
-    image.src = `${TILE_BASE_PATH}forest.png`;
+    image.src = `${TILE_BASE_PATH}forest.png?v=normalized`;
     this.forestTiles = image;
   }
 
@@ -147,10 +153,10 @@ export class Renderer {
         const tileIndex = this.getForestTileIndex(x / TILE_SIZE, y / TILE_SIZE);
         this.ctx.drawImage(
           this.forestTiles,
-          tileIndex * SPRITE_SIZE,
+          tileIndex * (this.forestTiles.naturalWidth / 4),
           0,
-          SPRITE_SIZE,
-          SPRITE_SIZE,
+          this.forestTiles.naturalWidth / 4,
+          this.forestTiles.naturalHeight,
           x,
           y,
           TILE_SIZE,
@@ -292,20 +298,45 @@ export class Renderer {
     this.ctx.restore();
   }
 
+  private buildSheetCanvas(image: HTMLImageElement, cols: number, rows: number, frameSize = TILE_SIZE): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
+    canvas.width = cols * frameSize;
+    canvas.height = rows * frameSize;
+    const sheetCtx = canvas.getContext('2d');
+    if (sheetCtx) {
+      sheetCtx.imageSmoothingEnabled = false;
+      sheetCtx.clearRect(0, 0, canvas.width, canvas.height);
+      sheetCtx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight, 0, 0, canvas.width, canvas.height);
+    }
+    return canvas;
+  }
+
   private loadSprites(): void {
     const spriteNames: SpriteName[] = ['player', 'goblin', 'orc', 'troll', 'dragon'];
 
     spriteNames.forEach((name) => {
       const image = new Image();
       image.onload = () => {
+        this.spriteSheets[name] = this.buildSheetCanvas(image, SPRITE_COLUMNS.length, SPRITE_DIRECTIONS.length);
         this.loadedSprites.add(name);
       };
       image.onerror = () => {
         console.warn(`Failed to load sprite: ${name}`);
       };
       image.src = `${SPRITE_BASE_PATH}${name}.png`;
-      this.sprites[name] = image;
     });
+  }
+
+  private loadCombatEffects(): void {
+    const image = new Image();
+    image.onload = () => {
+      this.effectSheet = this.buildSheetCanvas(image, EFFECT_COLUMNS.length, EFFECT_ROWS.length);
+      this.combatEffectsLoaded = true;
+    };
+    image.onerror = () => {
+      console.warn('Failed to load combat effects');
+    };
+    image.src = `${EFFECT_BASE_PATH}combat-effects.png`;
   }
 
   private drawSprite(
@@ -315,25 +346,15 @@ export class Renderer {
     direction: SpriteDirection,
     frame: SpriteColumn
   ): boolean {
-    const sprite = this.sprites[spriteName];
-    if (!sprite || !this.loadedSprites.has(spriteName)) {
+    const sheet = this.spriteSheets[spriteName];
+    if (!sheet || !this.loadedSprites.has(spriteName)) {
       return false;
     }
 
-    const sourceX = SPRITE_COLUMNS.indexOf(frame) * SPRITE_SIZE;
-    const sourceY = SPRITE_DIRECTIONS.indexOf(direction) * SPRITE_SIZE;
+    const sourceX = SPRITE_COLUMNS.indexOf(frame) * TILE_SIZE;
+    const sourceY = SPRITE_DIRECTIONS.indexOf(direction) * TILE_SIZE;
 
-    this.ctx.drawImage(
-      sprite,
-      sourceX,
-      sourceY,
-      SPRITE_SIZE,
-      SPRITE_SIZE,
-      Math.round(x),
-      Math.round(y),
-      TILE_SIZE,
-      TILE_SIZE
-    );
+    this.ctx.drawImage(sheet, sourceX, sourceY, TILE_SIZE, TILE_SIZE, Math.round(x), Math.round(y), TILE_SIZE, TILE_SIZE);
 
     return true;
   }
@@ -411,6 +432,15 @@ export class Renderer {
 
       this.ctx.save();
       this.ctx.globalAlpha = alpha;
+      if (this.drawCombatEffect(attack, progress)) {
+        if (attack.hit) {
+          const hitPoint = this.getEffectPoint(attack, attack.range * 0.76);
+          this.drawEffectFrame('hit', progress, hitPoint.x, hitPoint.y, 42);
+        }
+        this.ctx.restore();
+        return;
+      }
+
       this.ctx.lineCap = 'square';
       this.ctx.lineJoin = 'miter';
       this.ctx.shadowColor = palette.glow;
@@ -426,6 +456,64 @@ export class Renderer {
 
       this.ctx.restore();
     });
+  }
+
+  private drawCombatEffect(attack: AttackEvent, progress: number): boolean {
+    const effect: EffectRow = attack.weapon === 'battleAxe' ? 'slash' : 'thrust';
+    const point = this.getEffectPoint(attack, attack.range * 0.55);
+    const width = Math.max(52, attack.range * 1.25);
+    const height = 46;
+    this.drawEffectFrame(effect, progress, point.x, point.y, width, height, this.getEffectRotation(attack.direction));
+    return this.combatEffectsLoaded;
+  }
+
+  private drawEffectFrame(
+    effect: EffectRow,
+    progress: number,
+    x: number,
+    y: number,
+    width: number,
+    height = width,
+    rotation = 0
+  ): boolean {
+    if (!this.effectSheet || !this.combatEffectsLoaded) return false;
+
+    const frameIndex = Math.min(EFFECT_COLUMNS.length - 1, Math.floor(progress * EFFECT_COLUMNS.length));
+    const rowIndex = EFFECT_ROWS.indexOf(effect);
+
+    this.ctx.save();
+    this.ctx.translate(x, y);
+    this.ctx.rotate(rotation);
+    this.ctx.drawImage(
+      this.effectSheet,
+      frameIndex * TILE_SIZE,
+      rowIndex * TILE_SIZE,
+      TILE_SIZE,
+      TILE_SIZE,
+      -width / 2,
+      -height / 2,
+      width,
+      height
+    );
+    this.ctx.restore();
+    return true;
+  }
+
+  private getEffectPoint(attack: AttackEvent, distance: number): { x: number; y: number } {
+    return this.offsetByDirection(attack.x, attack.y, attack.direction, distance);
+  }
+
+  private getEffectRotation(direction: 'up' | 'down' | 'left' | 'right'): number {
+    switch (direction) {
+      case 'right':
+        return 0;
+      case 'down':
+        return Math.PI / 2;
+      case 'left':
+        return Math.PI;
+      case 'up':
+        return -Math.PI / 2;
+    }
   }
 
   private drawWeaponSweep(attack: AttackEvent, color: string, width: number, progress: number): void {

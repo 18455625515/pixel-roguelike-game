@@ -2,9 +2,12 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/client/main.ts',
+  entry: {
+    main: './src/client/main.ts',
+    mapEditor: './src/client/map-editor.ts',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist/public'),
   },
   module: {

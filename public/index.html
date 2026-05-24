@@ -27,11 +27,7 @@
       min-height: 100vh;
       min-height: 100dvh;
       color: var(--text);
-      background:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        var(--bg);
-      background-size: 24px 24px;
+      background: var(--bg);
       font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
       display: flex;
       justify-content: center;
@@ -196,15 +192,20 @@
 
     .actionPanel {
       display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
       gap: 8px;
       padding: 8px;
-      background: rgba(12, 15, 21, 0.86);
+      max-height: min(38vh, 220px);
+      background: rgba(12, 15, 21, 0.92);
       border: 1px solid rgba(80, 217, 255, 0.28);
       border-radius: 8px;
       backdrop-filter: blur(6px);
       pointer-events: auto;
       overflow-x: auto;
+      overflow-y: auto;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
 
     .actionPanel::-webkit-scrollbar {
@@ -213,8 +214,9 @@
 
     .touchBtn {
       min-width: 58px;
-      height: 38px;
-      padding: 0 9px;
+      min-height: 40px;
+      height: auto;
+      padding: 6px 9px;
       color: var(--text);
       background: var(--panel-2);
       border: 1px solid var(--line);
@@ -224,6 +226,106 @@
       cursor: pointer;
       white-space: nowrap;
       touch-action: manipulation;
+    }
+
+    .recruitBtn {
+      min-width: 72px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      line-height: 1.15;
+    }
+
+    .recruitBtn .recruitName {
+      font-size: 12px;
+    }
+
+    .recruitBtn .recruitCost {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+
+    .recruitBtn.unaffordable .recruitCost {
+      color: #c96a6a;
+    }
+
+    .actionPanel--withDetail {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      max-height: min(48vh, 320px);
+    }
+
+    .actionPanelRow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      max-height: min(22vh, 140px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .buildingDetailCard {
+      width: 100%;
+      flex: 0 0 auto;
+      margin-bottom: 0;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--cyan);
+      background: linear-gradient(180deg, rgba(80, 217, 255, 0.08), rgba(18, 21, 28, 0.95));
+      text-align: left;
+    }
+
+    .buildingDetailHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .buildingDetailHead strong {
+      font-size: 16px;
+      color: var(--cyan);
+    }
+
+    .buildingDetailTag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .buildingDetailSummary {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .buildingDetailStats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 6px 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .buildingDetailEffects {
+      margin: 0;
+      padding-left: 18px;
+      color: #d5e2d8;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .buildingDetailEffects li + li {
+      margin-top: 4px;
     }
 
     .modePanel .touchBtn {
@@ -254,7 +356,13 @@
 
     @media (max-width: 640px) {
       body {
-        padding: 12px;
+        padding: 8px;
+        align-items: stretch;
+      }
+
+      #gameContainer {
+        width: 100%;
+        height: 100dvh;
       }
 
       .gameHeader {
@@ -262,25 +370,57 @@
       }
 
       #gameCanvas {
-        width: calc(100vw - 24px);
-        height: calc(100dvh - 24px - env(safe-area-inset-bottom));
+        width: 100vw;
+        height: calc(100dvh - 120px - env(safe-area-inset-bottom));
+        max-height: none;
         aspect-ratio: auto;
       }
 
-      .touchBtn {
-        min-width: 52px;
-        height: 34px;
-        padding: 0 8px;
-        font-size: 12px;
+      .touchHud {
+        left: 6px;
+        right: 6px;
+        bottom: max(6px, env(safe-area-inset-bottom));
       }
 
-    .statusStrip {
+      .modePanel {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .modePanel .touchBtn {
+        min-height: 44px;
+        font-size: 13px;
+      }
+
+      .touchBtn {
+        min-width: calc(33% - 8px);
+        min-height: 44px;
+        padding: 8px 10px;
+        font-size: 13px;
+      }
+
+      .recruitBtn {
+        min-width: calc(50% - 8px);
+      }
+
+      .statusStrip {
         font-size: 11px;
         flex-direction: column;
+        top: 6px;
+        left: 6px;
+        right: 6px;
       }
 
       .actionPanel {
-        padding-bottom: 6px;
+        max-height: min(46vh, 280px);
+        padding-bottom: max(6px, env(safe-area-inset-bottom));
+      }
+
+      .actionPanel--withDetail {
+        max-height: min(52vh, 340px);
+      }
+
+      .buildingDetailSummary {
+        font-size: 12px;
       }
     }
   </style>
@@ -296,10 +436,14 @@
       maxlength="20"
     >
     <button id="joinButton">开始战役</button>
+    <p style="margin-top: 12px; font-size: 13px;">
+      <a href="/map-editor.html" style="color: var(--cyan); text-decoration: none;">打开地图编辑器</a>
+      · 自定义地形/资源/建筑并导出 JSON
+    </p>
     <div class="instructions">
       <strong>操作</strong><br>
-      点己方单位选择，点地面移动，点敌人或敌方建筑攻击，点资源让工人采集。<br>
-      长按拖动地图。点主城、仓库或兵营打开建造/招募操作，城墙可拖动连续建造。
+      点选单位 · 点地移动 · 点敌攻击 · 点资源采集（伐木工砍林、农民种田）。<br>
+      单指拖地图；从己方单位上开始拖不会误触移动。主城/兵营可招募（按钮显示资源消耗）。
     </div>
   </div>
 
@@ -321,6 +465,6 @@
     </main>
   </div>
 
-  <script src="bundle.js"></script>
+  <script src="main.bundle.js"></script>
 </body>
 </html>

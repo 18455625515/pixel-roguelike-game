@@ -1,0 +1,12 @@
+{
+  "name": "pixel-roguelike-cocos",
+  "version": "1.0.0",
+  "description": "边境城邦指挥官 - Cocos Creator 客户端",
+  "creator": {
+    "version": "3.8.0"
+  },
+  "scripts": {
+    "sync:sim": "node ../scripts/sync-shared-to-cocos.js"
+  },
+  "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}

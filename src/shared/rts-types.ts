@@ -23,6 +23,8 @@ export type BuildingType =
   | 'warehouse'
   | 'barracks'
   | 'market'
+  | 'smithy'
+  | 'stable'
   | 'wall'
   | 'gate'
   | 'bridge'
@@ -63,6 +65,7 @@ export interface UnitOrder {
   targetTile?: { x: number; y: number };
   resource?: ResourceType;
   returning?: boolean;
+  lockedTarget?: boolean;
   path?: RtsVector[];
   pathTarget?: RtsVector;
 }
@@ -130,6 +133,8 @@ export interface RtsGameState {
   tileSize: number;
   day: number;
   timeOfDay: number;
+  /** 开局停战剩余秒数，0 表示停战已结束 */
+  truceRemaining: number;
   factions: Record<string, Faction>;
   tiles: Tile[];
   units: Record<string, Unit>;
@@ -139,4 +144,6 @@ export interface RtsGameState {
   buildMode: BuildingType | null;
   diplomacyLog: DiplomacyEvent[];
   combatEvents: CombatEvent[];
+  /** 战役结果：playing 进行中，victory 全灭敌方大本营，defeat 玩家主城被毁 */
+  gameOutcome: 'playing' | 'victory' | 'defeat';
 }

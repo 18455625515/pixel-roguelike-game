@@ -1,0 +1,317 @@
+{
+  "generatedAt": "2026-05-22T17:59:10.658Z",
+  "method": "edge-connected-background-flood-fill",
+  "inputDir": "public\\assets\\generated-openai\\sprites",
+  "outputDir": "public\\assets\\generated-openai\\sprites-transparent",
+  "tolerance": 30,
+  "feather": 1,
+  "dryRun": false,
+  "sprites": [
+    {
+      "status": "ok",
+      "name": "archer",
+      "input": "public\\assets\\generated-openai\\sprites\\archer.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\archer.png",
+      "size": "923x877",
+      "background": [
+        242,
+        242,
+        242
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 524528,
+      "softenedPixels": 2172,
+      "removedPercent": 64.8
+    },
+    {
+      "status": "ok",
+      "name": "cavalry",
+      "input": "public\\assets\\generated-openai\\sprites\\cavalry.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\cavalry.png",
+      "size": "1024x1024",
+      "background": [
+        237,
+        237,
+        237
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 716278,
+      "softenedPixels": 42354,
+      "removedPercent": 68.31
+    },
+    {
+      "status": "ok",
+      "name": "commander",
+      "input": "public\\assets\\generated-openai\\sprites\\commander.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\commander.png",
+      "size": "1024x1024",
+      "background": [
+        249,
+        249,
+        251
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 720941,
+      "softenedPixels": 22158,
+      "removedPercent": 68.75
+    },
+    {
+      "status": "ok",
+      "name": "dragon",
+      "input": "public\\assets\\generated-openai\\sprites\\dragon.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\dragon.png",
+      "size": "1024x1024",
+      "background": [
+        250,
+        250,
+        250
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 716084,
+      "softenedPixels": 21620,
+      "removedPercent": 68.29
+    },
+    {
+      "status": "ok",
+      "name": "engineer",
+      "input": "public\\assets\\generated-openai\\sprites\\engineer.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\engineer.png",
+      "size": "1024x1024",
+      "background": [
+        245,
+        245,
+        245
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 775951,
+      "softenedPixels": 2996,
+      "removedPercent": 74
+    },
+    {
+      "status": "ok",
+      "name": "farmer",
+      "input": "public\\assets\\generated-openai\\sprites\\farmer.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\farmer.png",
+      "size": "1024x1024",
+      "background": [
+        248,
+        249,
+        248
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 798293,
+      "softenedPixels": 16960,
+      "removedPercent": 76.13
+    },
+    {
+      "status": "ok",
+      "name": "goblin",
+      "input": "public\\assets\\generated-openai\\sprites\\goblin.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\goblin.png",
+      "size": "1024x1024",
+      "background": [
+        252,
+        252,
+        252
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 788837,
+      "softenedPixels": 5423,
+      "removedPercent": 75.23
+    },
+    {
+      "status": "ok",
+      "name": "guard",
+      "input": "public\\assets\\generated-openai\\sprites\\guard.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\guard.png",
+      "size": "1024x1024",
+      "background": [
+        247,
+        247,
+        247
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 809554,
+      "softenedPixels": 4769,
+      "removedPercent": 77.21
+    },
+    {
+      "status": "ok",
+      "name": "miner",
+      "input": "public\\assets\\generated-openai\\sprites\\miner.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\miner.png",
+      "size": "1024x1024",
+      "background": [
+        250,
+        250,
+        250
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 669586,
+      "softenedPixels": 81320,
+      "removedPercent": 63.86
+    },
+    {
+      "status": "ok",
+      "name": "orc",
+      "input": "public\\assets\\generated-openai\\sprites\\orc.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\orc.png",
+      "size": "1024x1024",
+      "background": [
+        240,
+        240,
+        240
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 691872,
+      "softenedPixels": 3093,
+      "removedPercent": 65.98
+    },
+    {
+      "status": "ok",
+      "name": "player",
+      "input": "public\\assets\\generated-openai\\sprites\\player.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\player.png",
+      "size": "1024x1024",
+      "background": [
+        247,
+        247,
+        247
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 779893,
+      "softenedPixels": 4511,
+      "removedPercent": 74.38
+    },
+    {
+      "status": "ok",
+      "name": "spearman",
+      "input": "public\\assets\\generated-openai\\sprites\\spearman.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\spearman.png",
+      "size": "1024x1024",
+      "background": [
+        243,
+        243,
+        243
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 840551,
+      "softenedPixels": 2059,
+      "removedPercent": 80.16
+    },
+    {
+      "status": "ok",
+      "name": "stonecutter",
+      "input": "public\\assets\\generated-openai\\sprites\\stonecutter.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\stonecutter.png",
+      "size": "1024x1024",
+      "background": [
+        253,
+        252,
+        253
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 533751,
+      "softenedPixels": 104692,
+      "removedPercent": 50.9
+    },
+    {
+      "status": "ok",
+      "name": "swordsman",
+      "input": "public\\assets\\generated-openai\\sprites\\swordsman.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\swordsman.png",
+      "size": "1024x1024",
+      "background": [
+        242,
+        242,
+        241
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 773375,
+      "softenedPixels": 1828,
+      "removedPercent": 73.75
+    },
+    {
+      "status": "ok",
+      "name": "trader",
+      "input": "public\\assets\\generated-openai\\sprites\\trader.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\trader.png",
+      "size": "1024x1024",
+      "background": [
+        247,
+        246,
+        246
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 759166,
+      "softenedPixels": 1996,
+      "removedPercent": 72.4
+    },
+    {
+      "status": "ok",
+      "name": "troll",
+      "input": "public\\assets\\generated-openai\\sprites\\troll.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\troll.png",
+      "size": "1024x1024",
+      "background": [
+        252,
+        252,
+        251
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 320547,
+      "softenedPixels": 73459,
+      "removedPercent": 30.57
+    },
+    {
+      "status": "ok",
+      "name": "woodcutter",
+      "input": "public\\assets\\generated-openai\\sprites\\woodcutter.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\woodcutter.png",
+      "size": "1024x1024",
+      "background": [
+        252,
+        252,
+        252
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 705064,
+      "softenedPixels": 25290,
+      "removedPercent": 67.24
+    },
+    {
+      "status": "ok",
+      "name": "worker",
+      "input": "public\\assets\\generated-openai\\sprites\\worker.png",
+      "output": "public\\assets\\generated-openai\\sprites-transparent\\worker.png",
+      "size": "1024x1024",
+      "background": [
+        246,
+        246,
+        246
+      ],
+      "tolerance": 30,
+      "feather": 1,
+      "removedPixels": 808617,
+      "softenedPixels": 6743,
+      "removedPercent": 77.12
+    }
+  ]
+}

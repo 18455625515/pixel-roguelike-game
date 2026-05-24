@@ -14,5 +14,18 @@
     "command",
     "hit"
   ],
-  "sheet": "combat-effects.png"
+  "sheet": "combat-effects.png",
+  "normalizedAt": "2026-05-22T17:11:20.997Z",
+  "extraction": {
+    "status": "success",
+    "sourceSize": {
+      "width": 1024,
+      "height": 1024
+    },
+    "sheetSize": {
+      "width": 128,
+      "height": 160
+    },
+    "frameCount": 20
+  }
 }

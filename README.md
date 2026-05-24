@@ -18,10 +18,12 @@
 - WebSocket (ws)
 - TypeScript
 
-**前端：**
-- HTML5 Canvas
-- TypeScript
-- Webpack
+**前端（两套客户端）：**
+- **Canvas 版**（`src/client/`）：HTML5 Canvas + Webpack，适合快速调试
+- **Cocos 版**（`cocos-client/`）：Cocos Creator 3.8 + WebGL，**推荐手机/生产环境**，解决单位多时卡顿
+
+**共享逻辑：**
+- `src/shared/rts-world.ts` — RTS 模拟（建造、战斗、经济、寻路）
 
 ## 快速开始
 
@@ -46,6 +48,15 @@ npm start
 ```
 
 然后在浏览器中访问 `http://localhost:3000`
+
+### Cocos 高性能客户端（推荐手机）
+
+1. 安装 [Cocos Creator 3.8+](https://www.cocos.com/creator-download)
+2. 同步共享逻辑：`npm run cocos:sync`
+3. 用 Cocos Dashboard 打开 `cocos-client/` 目录
+4. 按 `cocos-client/README.md` 搭建场景并 **构建 Web Mobile**
+
+Canvas 版已做模拟层优化（A* 最小堆、空间网格碰撞、视口裁剪）；完整渲染性能提升请使用 Cocos 构建。
 
 ## 游戏玩法
 

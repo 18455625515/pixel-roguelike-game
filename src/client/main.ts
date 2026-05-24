@@ -1,11 +1,15 @@
-import { BuildingType, ResourceType, RtsVector, TerrainType, UnitRole } from '../shared/rts-types';
+import { BUILDING_CATALOG } from '../shared/building-catalog';
+import { Building, BuildingType, ResourceType, RtsVector, TerrainType, UnitRole } from '../shared/rts-types';
 import { RtsRenderer } from './rts-renderer';
-import { RtsWorld } from './rts-world';
+import { RtsWorld } from '../shared/rts-world';
+import { CUSTOM_MAP_STORAGE_KEY, MapData } from '../shared/map-data';
 
 type TouchMode = 'command' | 'build' | 'recruit' | 'commander';
+type RecruitTab = 'economy' | 'military';
 
-const TAP_THRESHOLD = 10;
-const SELECT_DRAG_THRESHOLD = 22;
+const isMobileLayout = window.matchMedia('(max-width: 768px)').matches;
+const TAP_THRESHOLD = isMobileLayout ? 14 : 10;
+const SELECT_DRAG_THRESHOLD = isMobileLayout ? 26 : 22;
 const MIN_ZOOM = 0.55;
 const MAX_ZOOM = 1.8;
 
@@ -16,14 +20,32 @@ const actionPanel = document.getElementById('actionPanel')!;
 const topStatus = document.getElementById('topStatus')!;
 const resourceStatus = document.getElementById('resourceStatus')!;
 
-const world = new RtsWorld();
+const world = createWorld();
 const renderer = new RtsRenderer(ctx, 1000, 720);
 
 const camera = {
-  x: 300,
-  y: 760,
-  zoom: 1,
+  x: 0,
+  y: 0,
+  zoom: isMobileLayout ? 0.5 : 0.62,
 };
+
+let actionButtonHost: HTMLElement = actionPanel;
+
+function createWorld(): RtsWorld {
+  try {
+    const raw = sessionStorage.getItem(CUSTOM_MAP_STORAGE_KEY);
+    if (raw) {
+      const mapData = JSON.parse(raw) as MapData;
+      if (mapData.version === 1 && mapData.mapWidth && mapData.mapHeight) {
+        sessionStorage.removeItem(CUSTOM_MAP_STORAGE_KEY);
+        return new RtsWorld({ mapData });
+      }
+    }
+  } catch {
+    /* 使用默认地图 */
+  }
+  return new RtsWorld();
+}
 
 function resizeCanvas(): void {
   const rect = canvas.getBoundingClientRect();
@@ -65,30 +87,95 @@ const activePointers = new Map<number, PointerEvent>();
 let interactionHint = '点单位选择，点地面移动，点敌人攻击，点资源采集';
 
 const buildOptions: Array<{ type: BuildingType; label: string }> = [
+  { type: 'house', label: '民居' },
   { type: 'farm', label: '农田' },
+  { type: 'lumberCamp', label: '伐木场' },
+  { type: 'warehouse', label: '仓库' },
+  { type: 'barracks', label: '兵营' },
+  { type: 'market', label: '市场' },
+  { type: 'smithy', label: '铁匠铺' },
+  { type: 'stable', label: '马厩' },
+  { type: 'tower', label: '箭塔' },
   { type: 'wall', label: '城墙' },
   { type: 'gate', label: '城门' },
   { type: 'bridge', label: '桥梁' },
-  { type: 'tower', label: '箭塔' },
-  { type: 'barracks', label: '兵营' },
-  { type: 'market', label: '市场' },
 ];
 
-const recruitOptions: Array<{ role: UnitRole; label: string }> = [
+const recruitEconomyOptions: Array<{ role: UnitRole; label: string }> = [
+  { role: 'worker', label: '工人' },
+  { role: 'farmer', label: '农民' },
   { role: 'woodcutter', label: '伐木工' },
   { role: 'stonecutter', label: '采石工' },
   { role: 'miner', label: '矿工' },
+  { role: 'engineer', label: '工兵' },
+];
+
+const recruitMilitaryOptions: Array<{ role: UnitRole; label: string }> = [
   { role: 'swordsman', label: '剑盾兵' },
   { role: 'spearman', label: '长矛兵' },
   { role: 'archer', label: '弓箭手' },
   { role: 'cavalry', label: '骑兵' },
-  { role: 'engineer', label: '工兵' },
+  { role: 'guard', label: '守卫' },
 ];
+
+let recruitTab: RecruitTab = 'economy';
+let gameOutcomeOverlay: HTMLElement | null = null;
+
+function isGameInteractive(): boolean {
+  return world.state.gameOutcome === 'playing';
+}
+
+function ensureGameOutcomeOverlay(): HTMLElement {
+  if (gameOutcomeOverlay) return gameOutcomeOverlay;
+  const overlay = document.createElement('div');
+  overlay.id = 'gameOutcomeOverlay';
+  overlay.style.cssText =
+    'display:none;position:absolute;inset:0;z-index:200;align-items:center;justify-content:center;background:rgba(4,6,10,0.82);padding:24px;text-align:center;';
+  overlay.innerHTML = `
+    <div style="max-width:360px;padding:28px;border:1px solid #2e3a45;border-top:3px solid #39ff88;background:#12151c;color:#f4f7ee;">
+      <h2 id="outcomeTitle" style="margin-bottom:12px;color:#39ff88;font-size:26px;">战役胜利</h2>
+      <p id="outcomeMessage" style="margin-bottom:18px;color:#9aa79b;line-height:1.7;font-size:14px;"></p>
+      <button id="outcomeRestartBtn" type="button" style="width:100%;height:42px;border:0;border-radius:4px;background:#39ff88;color:#07110c;font-weight:800;cursor:pointer;">返回首页</button>
+    </div>
+  `;
+  document.querySelector('.playfield')!.appendChild(overlay);
+  document.getElementById('outcomeRestartBtn')!.addEventListener('click', () => {
+    window.location.reload();
+  });
+  gameOutcomeOverlay = overlay;
+  return overlay;
+}
+
+function updateGameOutcomeOverlay(): void {
+  const outcome = world.state.gameOutcome;
+  if (outcome === 'playing') return;
+  const overlay = ensureGameOutcomeOverlay();
+  overlay.style.display = 'flex';
+  const title = document.getElementById('outcomeTitle')!;
+  const message = document.getElementById('outcomeMessage')!;
+  if (outcome === 'victory') {
+    title.textContent = '战役胜利';
+    title.style.color = '#39ff88';
+    message.textContent = '所有敌方大本营均已陷落，边境归于平静。';
+  } else {
+    title.textContent = '城邦陷落';
+    title.style.color = '#ff5261';
+    message.textContent = '你的主城已被摧毁，无法再招募部队。';
+  }
+}
 
 function joinGame(): void {
   document.getElementById('joinDialog')!.style.display = 'none';
   document.getElementById('gameContainer')!.style.display = 'flex';
+  focusPlayerBase();
   renderActionPanel();
+}
+
+function focusPlayerBase(): void {
+  const base = world.playerBaseCenter;
+  camera.x = base.x - canvas.width / camera.zoom / 2;
+  camera.y = base.y - canvas.height / camera.zoom / 2;
+  clampCamera();
 }
 
 function setCommandMode(): void {
@@ -100,13 +187,14 @@ function setCommandMode(): void {
   renderActionPanel();
 }
 
-function enterRecruitMode(): void {
+function enterRecruitMode(tab: RecruitTab = 'economy'): void {
   mode = 'recruit';
+  recruitTab = tab;
   selectedBuild = null;
   viewedBuildingId = null;
   world.setBuildMode(null);
   if (world.state.activeCommanderId) world.toggleCommanderControl();
-  interactionHint = '选择兵种后会从主城或兵营招募';
+  interactionHint = tab === 'economy' ? '经济单位：工人修建，农民种田，专精采集' : '军事单位：显示完整资源消耗';
   renderActionPanel();
 }
 
@@ -139,29 +227,57 @@ function toggleCommanderMode(): void {
 function renderActionPanel(): void {
   renderModePanel();
   actionPanel.innerHTML = '';
+  actionPanel.className = viewedBuildingId ? 'actionPanel actionPanel--withDetail' : 'actionPanel';
+  actionButtonHost = actionPanel;
 
   if (viewedBuildingId) {
     const building = world.state.buildings[viewedBuildingId];
     if (building) {
-      addDisabledButton(`${getBuildingName(building.type)} ${Math.ceil(building.health)}/${building.maxHealth}`);
+      appendBuildingDetailCard(building);
+      const buttonRow = document.createElement('div');
+      buttonRow.className = 'actionPanelRow';
+      actionPanel.appendChild(buttonRow);
+      actionButtonHost = buttonRow;
 
-      if (building.type === 'townHall' || building.type === 'barracks') {
-        recruitOptions.forEach((option) => {
-          const button = makeActionButton(option.label, false);
-          button.addEventListener('click', () => {
-            const ok = world.recruit(option.role);
-            interactionHint = ok ? `已招募：${option.label}` : `资源不足，无法招募：${option.label}`;
-            renderActionPanel();
-          });
-          actionPanel.appendChild(button);
+      if (building.factionId !== 'player') {
+        const attack = makeActionButton('攻击该建筑', true);
+        attack.addEventListener('click', () => {
+          world.commandSelectedAttack(building.id, true);
+          viewedBuildingId = null;
+          interactionHint = `攻击建筑：${getBuildingName(building.type)}`;
+          renderActionPanel();
         });
+        buttonRow.appendChild(attack);
+        const close = makeActionButton('关闭', false);
+        close.addEventListener('click', () => {
+          viewedBuildingId = null;
+          renderActionPanel();
+        });
+        buttonRow.appendChild(close);
+        return;
+      }
+
+      if (building.type === 'townHall' || building.type === 'barracks' || building.type === 'stable') {
+        const ecoTab = makeActionButton('经济', recruitTab === 'economy');
+        ecoTab.addEventListener('click', () => {
+          recruitTab = 'economy';
+          renderActionPanel();
+        });
+        buttonRow.appendChild(ecoTab);
+        const milTab = makeActionButton('军事', recruitTab === 'military');
+        milTab.addEventListener('click', () => {
+          recruitTab = 'military';
+          renderActionPanel();
+        });
+        buttonRow.appendChild(milTab);
+        appendRecruitList(recruitTab === 'economy' ? recruitEconomyOptions : recruitMilitaryOptions);
       }
 
       if (building.type === 'townHall' || building.type === 'warehouse' || building.type === 'barracks') {
         buildOptions.forEach((option) => {
           const button = makeActionButton(`建${option.label}`, false);
           button.addEventListener('click', () => enterBuildMode(option.type));
-          actionPanel.appendChild(button);
+          buttonRow.appendChild(button);
         });
       }
 
@@ -173,7 +289,7 @@ function renderActionPanel(): void {
           interactionHint = `${getBuildingName(building.type)}已回收，返还一半材料`;
           renderActionPanel();
         });
-        actionPanel.appendChild(recycle);
+        buttonRow.appendChild(recycle);
       }
 
       const close = makeActionButton('关闭', false);
@@ -182,22 +298,15 @@ function renderActionPanel(): void {
         interactionHint = '已关闭建筑信息';
         renderActionPanel();
       });
-      actionPanel.appendChild(close);
+      buttonRow.appendChild(close);
       return;
     }
     viewedBuildingId = null;
   }
 
   if (mode === 'recruit') {
-    recruitOptions.forEach((option) => {
-      const button = makeActionButton(option.label, false);
-      button.addEventListener('click', () => {
-        const ok = world.recruit(option.role);
-        interactionHint = ok ? `已招募：${option.label}` : `资源不足，无法招募：${option.label}`;
-        renderActionPanel();
-      });
-      actionPanel.appendChild(button);
-    });
+    addUtilityButton(recruitTab === 'economy' ? '→军事' : '→经济', () => enterRecruitMode(recruitTab === 'economy' ? 'military' : 'economy'));
+    appendRecruitList(recruitTab === 'economy' ? recruitEconomyOptions : recruitMilitaryOptions);
     addUtilityButton('主城', focusTownHall);
     return;
   }
@@ -230,6 +339,8 @@ function renderActionPanel(): void {
 
   addUtilityButton('军队', selectAllCombatUnits);
   addUtilityButton('工人', selectAllWorkers);
+  addUtilityButton('农民', selectAllFarmers);
+  addUtilityButton('采集', selectAllGatherers);
   addUtilityButton('主城', focusTownHall);
   addDisabledButton(interactionHint);
 }
@@ -259,13 +370,13 @@ function addModeButton(label: string, active: boolean, action: () => void): void
 function addUtilityButton(label: string, action: () => void): void {
   const button = makeActionButton(label, false);
   button.addEventListener('click', action);
-  actionPanel.appendChild(button);
+  actionButtonHost.appendChild(button);
 }
 
 function addDisabledButton(label: string): void {
   const button = makeActionButton(label, false);
   button.disabled = true;
-  actionPanel.appendChild(button);
+  actionButtonHost.appendChild(button);
 }
 
 function selectUnits(predicate: (role: UnitRole) => boolean, hint: string): void {
@@ -287,7 +398,15 @@ function selectAllCombatUnits(): void {
 }
 
 function selectAllWorkers(): void {
-  selectUnits((role) => ['worker', 'woodcutter', 'stonecutter', 'miner', 'farmer', 'trader', 'engineer'].includes(role), '已选择工人');
+  selectUnits((role) => ['worker', 'engineer'].includes(role), '已选择工人');
+}
+
+function selectAllFarmers(): void {
+  selectUnits((role) => role === 'farmer', '已选择农民');
+}
+
+function selectAllGatherers(): void {
+  selectUnits((role) => ['woodcutter', 'stonecutter', 'miner', 'farmer'].includes(role), '已选择采集');
 }
 
 function focusTownHall(): void {
@@ -309,6 +428,23 @@ function makeActionButton(label: string, active: boolean): HTMLButtonElement {
   button.className = `touchBtn${active ? ' active' : ''}`;
   button.textContent = label;
   return button;
+}
+
+function makeRecruitButton(label: string, role: UnitRole): HTMLButtonElement {
+  const button = document.createElement('button');
+  const affordable = world.canAffordRecruit(role);
+  button.className = `touchBtn recruitBtn${affordable ? '' : ' unaffordable'}`;
+  button.innerHTML = `<span class="recruitName">${label}</span><span class="recruitCost">${world.getRecruitCostText(role)}</span>`;
+  button.addEventListener('click', () => {
+    const ok = world.recruit(role);
+    interactionHint = ok ? `已招募：${label}` : `资源不足：${world.getRecruitCostText(role)}`;
+    renderActionPanel();
+  });
+  return button;
+}
+
+function appendRecruitList(options: Array<{ role: UnitRole; label: string }>): void {
+  options.forEach((option) => actionButtonHost.appendChild(makeRecruitButton(option.label, option.role)));
 }
 
 function screenToWorld(clientX: number, clientY: number): RtsVector {
@@ -371,8 +507,8 @@ function handleTap(worldPoint: RtsVector): void {
   }
 
   if (building && building.factionId !== 'player') {
-    world.commandSelectedAttack(building.id);
-    interactionHint = `攻击建筑：${getBuildingName(building.type)}`;
+    viewedBuildingId = building.id;
+    interactionHint = `查看：${getBuildingName(building.type)}（可在此发起攻击）`;
     renderActionPanel();
     return;
   }
@@ -398,6 +534,7 @@ function handleTap(worldPoint: RtsVector): void {
 }
 
 canvas.addEventListener('pointerdown', (event) => {
+  if (!isGameInteractive()) return;
   if ((event.target as HTMLElement).closest('.touchHud')) return;
   canvas.setPointerCapture(event.pointerId);
   activePointers.set(event.pointerId, event);
@@ -468,7 +605,7 @@ canvas.addEventListener('pointermove', (event) => {
     return;
   }
 
-  if (dragStarted && !selection.active) {
+  if (dragStarted && !selection.active && !pointerStartOnFriendly) {
     panStarted = true;
     selection.active = false;
   }
@@ -605,13 +742,53 @@ function updateCameraFollow(): void {
 
 function updateStatus(): void {
   const player = world.state.factions.player;
+  const pop = world.getPopulationStats('player');
+  const dayProgress = Math.floor((world.state.timeOfDay / 210) * 100);
   const modeText = mode === 'build' && selectedBuild ? `建造：${getBuildingName(selectedBuild)}` : mode === 'commander' ? '将领' : '指挥';
-  topStatus.textContent = `第 ${world.state.day} 天 | ${modeText} | 已选 ${world.state.selectedUnitIds.length}`;
-  resourceStatus.textContent = `粮 ${Math.floor(player.resources.food)} 木 ${Math.floor(player.resources.wood)} 石 ${Math.floor(player.resources.stone)} 铁 ${Math.floor(player.resources.iron)} 金 ${Math.floor(player.resources.gold)} | ${interactionHint}`;
+  const truceText =
+    world.state.truceRemaining > 0
+      ? `停战 ${Math.ceil(world.state.truceRemaining / 60)}:${String(Math.ceil(world.state.truceRemaining % 60)).padStart(2, '0')} | `
+      : '';
+  const remainingHqs = world.getRemainingNpcHeadquarters().length;
+  const objectiveText =
+    world.state.gameOutcome === 'playing' && remainingHqs > 0 ? ` | 敌方大本营 ${remainingHqs}` : '';
+  const outcomeText =
+    world.state.gameOutcome === 'victory'
+      ? ' | 战役胜利'
+      : world.state.gameOutcome === 'defeat'
+        ? ' | 城邦陷落'
+        : '';
+  topStatus.textContent = `${truceText}第 ${world.state.day} 天（${dayProgress}%）| ${modeText} | 已选 ${world.state.selectedUnitIds.length}${objectiveText}${outcomeText}`;
+  resourceStatus.textContent = `粮 ${Math.floor(player.resources.food)} 木 ${Math.floor(player.resources.wood)} 石 ${Math.floor(player.resources.stone)} 铁 ${Math.floor(player.resources.iron)} 金 ${Math.floor(player.resources.gold)} 人口 ${pop.used}/${pop.cap} | ${interactionHint}`;
+}
+
+function appendBuildingDetailCard(building: Building): void {
+  const entry = BUILDING_CATALOG[building.type];
+  const card = document.createElement('div');
+  card.className = 'buildingDetailCard';
+  const status = building.complete ? '已建成' : `施工中 ${Math.floor(building.progress * 100)}%`;
+  const owner = world.state.factions[building.factionId]?.name ?? building.factionId;
+  card.innerHTML = `
+    <div class="buildingDetailHead">
+      <strong>${entry.name}</strong>
+      <span class="buildingDetailTag">${status}</span>
+    </div>
+    <p class="buildingDetailSummary">${entry.summary}</p>
+    <div class="buildingDetailStats">
+      <span>生命 ${Math.ceil(building.health)}/${building.maxHealth}</span>
+      <span>占地 ${Math.ceil(building.width / world.state.tileSize)}×${Math.ceil(building.height / world.state.tileSize)} 格</span>
+      <span>归属 ${owner}</span>
+      <span>造价 ${entry.costText}</span>
+    </div>
+    <ul class="buildingDetailEffects">
+      ${entry.effects.map((line) => `<li>${line}</li>`).join('')}
+    </ul>
+  `;
+  actionPanel.appendChild(card);
 }
 
 function getBuildingName(type: BuildingType): string {
-  return buildOptions.find((option) => option.type === type)?.label ?? type;
+  return BUILDING_CATALOG[type]?.name ?? type;
 }
 
 function getUnitName(role: UnitRole): string {
@@ -669,6 +846,7 @@ function loop(): void {
   updateCameraFollow();
   clampCamera();
   updateStatus();
+  updateGameOutcomeOverlay();
   renderer.render(world.state, camera, selection, getBuildPreview());
   requestAnimationFrame(loop);
 }

@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-05-19T13:20:51.600Z",
+  "model": "gpt-image-2",
+  "quality": "medium",
+  "size": "1024x1024",
+  "applyToGame": false,
+  "report": [
+    {
+      "name": "player",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\player.png"
+    },
+    {
+      "name": "commander",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\commander.png"
+    },
+    {
+      "name": "worker",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\worker.png"
+    },
+    {
+      "name": "woodcutter",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\woodcutter.png"
+    },
+    {
+      "name": "stonecutter",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\stonecutter.png"
+    },
+    {
+      "name": "miner",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\miner.png"
+    },
+    {
+      "name": "farmer",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\farmer.png"
+    },
+    {
+      "name": "trader",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\trader.png"
+    },
+    {
+      "name": "swordsman",
+      "status": "skipped",
+      "path": "public\\assets\\generated-openai\\sprites\\swordsman.png"
+    },
+    {
+      "name": "spearman",
+      "status": "failed",
+      "error": "fetch failed"
+    },
+    {
+      "name": "archer",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\archer.png"
+    },
+    {
+      "name": "cavalry",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\cavalry.png"
+    },
+    {
+      "name": "engineer",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\engineer.png"
+    },
+    {
+      "name": "guard",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\guard.png"
+    },
+    {
+      "name": "goblin",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\goblin.png"
+    },
+    {
+      "name": "orc",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\orc.png"
+    },
+    {
+      "name": "troll",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\troll.png"
+    },
+    {
+      "name": "dragon",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\sprites\\dragon.png"
+    },
+    {
+      "name": "forest-tiles",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\tiles\\forest.png"
+    },
+    {
+      "name": "combat-effects",
+      "status": "success",
+      "path": "public\\assets\\generated-openai\\effects\\combat-effects.png"
+    }
+  ]
+}

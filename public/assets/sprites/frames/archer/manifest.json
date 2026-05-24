@@ -1,0 +1,264 @@
+{
+  "role": "archer",
+  "sourceSize": {
+    "width": 923,
+    "height": 877
+  },
+  "columns": [
+    "idle",
+    "walk1",
+    "walk2",
+    "attack"
+  ],
+  "directions": [
+    "down",
+    "left",
+    "right",
+    "up"
+  ],
+  "method": "grid-4x4-exact-cell",
+  "extractedAt": "2026-05-22T17:59:19.761Z",
+  "frameCount": 16,
+  "frames": [
+    {
+      "file": "idle_down.png",
+      "name": "idle_down",
+      "column": "idle",
+      "direction": "down",
+      "index": 0,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk1_down.png",
+      "name": "walk1_down",
+      "column": "walk1",
+      "direction": "down",
+      "index": 1,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 231,
+        "y": 0,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk2_down.png",
+      "name": "walk2_down",
+      "column": "walk2",
+      "direction": "down",
+      "index": 2,
+      "size": "230x219",
+      "sourceRegion": {
+        "x": 462,
+        "y": 0,
+        "width": 230,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "attack_down.png",
+      "name": "attack_down",
+      "column": "attack",
+      "direction": "down",
+      "index": 3,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 692,
+        "y": 0,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "idle_left.png",
+      "name": "idle_left",
+      "column": "idle",
+      "direction": "left",
+      "index": 4,
+      "size": "231x220",
+      "sourceRegion": {
+        "x": 0,
+        "y": 219,
+        "width": 231,
+        "height": 220
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk1_left.png",
+      "name": "walk1_left",
+      "column": "walk1",
+      "direction": "left",
+      "index": 5,
+      "size": "231x220",
+      "sourceRegion": {
+        "x": 231,
+        "y": 219,
+        "width": 231,
+        "height": 220
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk2_left.png",
+      "name": "walk2_left",
+      "column": "walk2",
+      "direction": "left",
+      "index": 6,
+      "size": "230x220",
+      "sourceRegion": {
+        "x": 462,
+        "y": 219,
+        "width": 230,
+        "height": 220
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "attack_left.png",
+      "name": "attack_left",
+      "column": "attack",
+      "direction": "left",
+      "index": 7,
+      "size": "231x220",
+      "sourceRegion": {
+        "x": 692,
+        "y": 219,
+        "width": 231,
+        "height": 220
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "idle_right.png",
+      "name": "idle_right",
+      "column": "idle",
+      "direction": "right",
+      "index": 8,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 0,
+        "y": 439,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk1_right.png",
+      "name": "walk1_right",
+      "column": "walk1",
+      "direction": "right",
+      "index": 9,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 231,
+        "y": 439,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk2_right.png",
+      "name": "walk2_right",
+      "column": "walk2",
+      "direction": "right",
+      "index": 10,
+      "size": "230x219",
+      "sourceRegion": {
+        "x": 462,
+        "y": 439,
+        "width": 230,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "attack_right.png",
+      "name": "attack_right",
+      "column": "attack",
+      "direction": "right",
+      "index": 11,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 692,
+        "y": 439,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "idle_up.png",
+      "name": "idle_up",
+      "column": "idle",
+      "direction": "up",
+      "index": 12,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 0,
+        "y": 658,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk1_up.png",
+      "name": "walk1_up",
+      "column": "walk1",
+      "direction": "up",
+      "index": 13,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 231,
+        "y": 658,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "walk2_up.png",
+      "name": "walk2_up",
+      "column": "walk2",
+      "direction": "up",
+      "index": 14,
+      "size": "230x219",
+      "sourceRegion": {
+        "x": 462,
+        "y": 658,
+        "width": 230,
+        "height": 219
+      },
+      "trimBounds": null
+    },
+    {
+      "file": "attack_up.png",
+      "name": "attack_up",
+      "column": "attack",
+      "direction": "up",
+      "index": 15,
+      "size": "231x219",
+      "sourceRegion": {
+        "x": 692,
+        "y": 658,
+        "width": 231,
+        "height": 219
+      },
+      "trimBounds": null
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地图编辑器 - 边境城邦指挥官</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #08090d; --panel: #12151c; --line: #2e3a45;
+      --text: #f4f7ee; --muted: #9aa79b; --green: #39ff88; --cyan: #50d9ff;
+    }
+    body {
+      min-height: 100dvh; background: var(--bg); color: var(--text);
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .topBar {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      padding: 10px 12px; background: var(--panel); border-bottom: 1px solid var(--line);
+    }
+    .topBar input {
+      height: 36px; padding: 0 10px; background: #0b0d12;
+      border: 1px solid var(--line); color: var(--text); border-radius: 4px;
+      width: 100px;
+    }
+  .topBar input[name="mapName"] { width: 140px; flex: 1; min-width: 120px; }
+    .topBtn {
+      height: 36px; padding: 0 14px; border: 1px solid var(--line);
+      background: #191e27; color: var(--text); border-radius: 4px;
+      font-weight: 700; cursor: pointer;
+    }
+    .topBtn.primary { background: var(--green); color: #07110c; border-color: var(--green); }
+    .editorMain { flex: 1; display: flex; min-height: 0; position: relative; }
+    #editorCanvas {
+      flex: 1; width: 100%; display: block; background: #171a1f;
+      touch-action: none; image-rendering: pixelated;
+    }
+    .editorHud {
+      position: absolute; left: 8px; right: 8px; bottom: max(8px, env(safe-area-inset-bottom));
+      display: grid; gap: 8px; pointer-events: none;
+    }
+    #editorStatus {
+      padding: 8px 10px; background: rgba(7,9,12,0.85);
+      border: 1px solid var(--line); border-radius: 6px; font-size: 12px; color: var(--muted);
+    }
+    #toolPanel {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 8px;
+      background: rgba(12,15,21,0.92); border: 1px solid rgba(57,255,136,0.25);
+      border-radius: 8px; max-height: 38vh; overflow-y: auto;
+      pointer-events: auto;
+    }
+    .toolBtn {
+      min-height: 36px; padding: 6px 10px; border: 1px solid var(--line);
+      background: #191e27; color: var(--text); border-radius: 6px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .toolBtn.active { background: var(--green); color: #07110c; border-color: var(--green); }
+    #importFile { display: none; }
+    .importLabel { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header class="topBar">
+    <input id="mapName" name="mapName" value="我的地图" placeholder="地图名称">
+    <input id="mapWidth" type="number" value="120" min="40" max="280" title="宽度格数">
+    <input id="mapHeight" type="number" value="80" min="40" max="170" title="高度格数">
+    <button class="topBtn" id="btnNew" type="button">新建</button>
+    <button class="topBtn" id="btnExport" type="button">导出 JSON</button>
+    <label class="topBtn importLabel" for="importFile">导入 JSON</label>
+    <input id="importFile" type="file" accept=".json,application/json">
+    <button class="topBtn primary" id="btnPlay" type="button">试玩此地图</button>
+    <button class="topBtn" id="btnBack" type="button">返回游戏</button>
+  </header>
+  <div class="editorMain">
+    <canvas id="editorCanvas"></canvas>
+    <div class="editorHud">
+      <div id="editorStatus">加载中…</div>
+      <div id="toolPanel"></div>
+    </div>
+  </div>
+  <script src="mapEditor.bundle.js"></script>
+</body>
+</html>

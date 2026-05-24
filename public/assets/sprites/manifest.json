@@ -14,23 +14,27 @@
     "up"
   ],
   "sheets": {
-    "player": "player.png",
-    "goblin": "goblin.png",
-    "orc": "orc.png",
-    "troll": "troll.png",
-    "dragon": "dragon.png",
-    "commander": "commander.png",
-    "worker": "worker.png",
-    "woodcutter": "woodcutter.png",
-    "stonecutter": "stonecutter.png",
-    "miner": "miner.png",
-    "farmer": "farmer.png",
-    "trader": "trader.png",
-    "swordsman": "swordsman.png",
-    "spearman": "spearman.png",
     "archer": "archer.png",
     "cavalry": "cavalry.png",
+    "commander": "commander.png",
+    "dragon": "dragon.png",
     "engineer": "engineer.png",
-    "guard": "guard.png"
-  }
+    "farmer": "farmer.png",
+    "goblin": "goblin.png",
+    "guard": "guard.png",
+    "miner": "miner.png",
+    "orc": "orc.png",
+    "player": "player.png",
+    "spearman": "spearman.png",
+    "stonecutter": "stonecutter.png",
+    "swordsman": "swordsman.png",
+    "trader": "trader.png",
+    "troll": "troll.png",
+    "woodcutter": "woodcutter.png",
+    "worker": "worker.png"
+  },
+  "normalizedAt": "2026-05-22T17:38:36.165Z",
+  "method": "grid-split-per-frame",
+  "grid": "4x4",
+  "outputSize": "128x128"
 }

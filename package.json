@@ -6,11 +6,19 @@
   "scripts": {
     "start": "node dist/server/server.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon dist/server/server.js\"",
-    "build": "tsc && webpack",
+    "build": "tsc && webpack && node scripts/copy-public-to-dist.js",
     "build:server": "tsc",
     "build:client": "webpack",
     "generate:sprites": "node scripts/generate-sprites.js",
-    "clean": "rm -rf dist build"
+    "generate:openai-assets": "node scripts/generate-openai-assets.js",
+    "generate:openai-assets:apply": "node scripts/generate-openai-assets.js --apply",
+    "normalize:forest-tiles": "node scripts/normalize-forest-tiles.js public/assets/generated-openai/tiles/forest.png public/assets/tiles/forest.png",
+    "remove:sprite-backgrounds": "node scripts/remove-sprite-backgrounds.js",
+    "split:sprites": "node scripts/split-sprite-sheets.js",
+    "split:sprites:32": "node scripts/split-sprite-sheets.js --scale 32",
+    "split:sprites:sheet": "node scripts/split-sprite-sheets.js --scale 32 --rebuild-sheet",
+    "clean": "rm -rf dist build",
+    "cocos:sync": "node scripts/sync-shared-to-cocos.js"
   },
   "dependencies": {
     "express": "^4.18.2",

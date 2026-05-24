@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-05-22T17:26:36.046Z",
+  "applyToGame": true,
+  "prebuild": false,
+  "note": "仅复制原图，游戏内缩放",
+  "sprites": [
+    {
+      "status": "copied",
+      "name": "archer"
+    },
+    {
+      "status": "copied",
+      "name": "cavalry"
+    },
+    {
+      "status": "copied",
+      "name": "commander"
+    },
+    {
+      "status": "copied",
+      "name": "dragon"
+    },
+    {
+      "status": "copied",
+      "name": "engineer"
+    },
+    {
+      "status": "copied",
+      "name": "farmer"
+    },
+    {
+      "status": "copied",
+      "name": "goblin"
+    },
+    {
+      "status": "copied",
+      "name": "guard"
+    },
+    {
+      "status": "copied",
+      "name": "miner"
+    },
+    {
+      "status": "copied",
+      "name": "orc"
+    },
+    {
+      "status": "copied",
+      "name": "player"
+    },
+    {
+      "status": "copied",
+      "name": "spearman"
+    },
+    {
+      "status": "copied",
+      "name": "stonecutter"
+    },
+    {
+      "status": "copied",
+      "name": "swordsman"
+    },
+    {
+      "status": "copied",
+      "name": "trader"
+    },
+    {
+      "status": "copied",
+      "name": "troll"
+    },
+    {
+      "status": "copied",
+      "name": "woodcutter"
+    },
+    {
+      "status": "copied",
+      "name": "worker"
+    }
+  ],
+  "effects": {
+    "status": "copied"
+  },
+  "tiles": {
+    "status": "copied"
+  }
+}
