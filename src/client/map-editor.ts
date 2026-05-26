@@ -8,7 +8,7 @@ import {
   MapData,
 } from '../shared/map-data';
 
-type EditorTool = 'terrain' | 'resource' | 'building' | 'unit' | 'erase';
+type EditorTool = 'terrain' | 'resource' | 'building' | 'unit' | 'erase' | 'pan';
 
 const canvas = document.getElementById('editorCanvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
@@ -35,8 +35,35 @@ let unitBrush: UnitRole = 'worker';
 let factionBrush = 'player';
 let painting = false;
 let panning = false;
+let pointerDown = false;
+let spacePanActive = false;
 let pointerLast = { x: 0, y: 0 };
+let pointerDownAt = { x: 0, y: 0 };
+let pendingGesture = false;
 const brushSize = 1;
+const PAN_DRAG_THRESHOLD = 8;
+const PAINT_DRAG_THRESHOLD = 4;
+
+function isBrushTool(): boolean {
+  return tool === 'terrain' || tool === 'resource' || tool === 'erase';
+}
+
+function shouldPanFromEvent(e: PointerEvent): boolean {
+  return tool === 'pan' || spacePanActive || e.shiftKey || e.button === 1;
+}
+
+function isPointerPanButtonDown(e: PointerEvent): boolean {
+  return (e.buttons & 1) !== 0 || (e.buttons & 4) !== 0;
+}
+
+function pointerDragDistance(e: PointerEvent): number {
+  return Math.hypot(e.clientX - pointerDownAt.x, e.clientY - pointerDownAt.y);
+}
+
+function panCameraByScreenDelta(dx: number, dy: number): void {
+  camera.x -= dx / camera.zoom;
+  camera.y -= dy / camera.zoom;
+}
 
 const terrains: Array<{ id: TerrainType; label: string }> = [
   { id: 'grass', label: '草地' },
@@ -186,6 +213,10 @@ function renderToolPanel(): void {
     tool = 'erase';
     renderToolPanel();
   });
+  addBtn('平移', tool === 'pan', () => {
+    tool = 'pan';
+    renderToolPanel();
+  });
 
   if (tool === 'terrain') {
     terrains.forEach((t) => addBtn(t.label, terrainBrush === t.id, () => {
@@ -235,43 +266,108 @@ function loop(): void {
   requestAnimationFrame(loop);
 }
 
+function finishPointerInteraction(e: PointerEvent): void {
+  if (pendingGesture && !panning) {
+    const drag = pointerDragDistance(e);
+    if (drag < PAN_DRAG_THRESHOLD || tool === 'building' || tool === 'unit') {
+      const p = screenToWorld(e.clientX, e.clientY);
+      if (tool !== 'pan') setStatus(applyBrush(p.x, p.y));
+    }
+  }
+  painting = false;
+  panning = false;
+  pointerDown = false;
+  pendingGesture = false;
+}
+
 canvas.addEventListener('pointerdown', (e) => {
   if ((e.target as HTMLElement).closest('.editorHud')) return;
+  if (e.button !== 0 && e.button !== 1 && e.button !== 2) return;
+
   canvas.setPointerCapture(e.pointerId);
+  pointerDown = true;
   pointerLast = { x: e.clientX, y: e.clientY };
-  if (e.button === 1 || e.shiftKey) {
+  pointerDownAt = { x: e.clientX, y: e.clientY };
+  pendingGesture = true;
+  painting = false;
+  panning = false;
+
+  if (shouldPanFromEvent(e)) {
     panning = true;
+    pendingGesture = false;
     return;
   }
   if (e.button === 2) {
     const p = screenToWorld(e.clientX, e.clientY);
     world.editorRemoveAt(p);
     setStatus('已删除');
+    pendingGesture = false;
+    pointerDown = false;
     return;
   }
-  painting = true;
-  const p = screenToWorld(e.clientX, e.clientY);
-  setStatus(applyBrush(p.x, p.y));
 });
 
 canvas.addEventListener('pointermove', (e) => {
-  if (panning) {
+  if (panning && isPointerPanButtonDown(e)) {
     const dx = e.clientX - pointerLast.x;
     const dy = e.clientY - pointerLast.y;
-    camera.x -= dx / camera.zoom;
-    camera.y -= dy / camera.zoom;
-    pointerLast = { x: e.clientX, y: e.clientY };
+    if (dx !== 0 || dy !== 0) {
+      panCameraByScreenDelta(dx, dy);
+      pointerLast = { x: e.clientX, y: e.clientY };
+    }
     return;
   }
-  if (!painting) return;
-  const p = screenToWorld(e.clientX, e.clientY);
-  if (tool === 'building' || tool === 'unit') return;
-  setStatus(applyBrush(p.x, p.y));
+
+  if (!pointerDown) return;
+  if (!pendingGesture && !painting) return;
+
+  const drag = pointerDragDistance(e);
+  if (pendingGesture && drag > PAN_DRAG_THRESHOLD && isPointerPanButtonDown(e)) {
+    if (shouldPanFromEvent(e) || tool === 'building' || tool === 'unit') {
+      panning = true;
+      pendingGesture = false;
+      const dx = e.clientX - pointerLast.x;
+      const dy = e.clientY - pointerLast.y;
+      panCameraByScreenDelta(dx, dy);
+      pointerLast = { x: e.clientX, y: e.clientY };
+      return;
+    }
+    if (isBrushTool()) {
+      painting = true;
+      pendingGesture = false;
+    }
+  }
+
+  if (painting && isBrushTool() && drag >= PAINT_DRAG_THRESHOLD) {
+    const p = screenToWorld(e.clientX, e.clientY);
+    setStatus(applyBrush(p.x, p.y));
+  }
 });
 
-canvas.addEventListener('pointerup', () => {
-  painting = false;
-  panning = false;
+canvas.addEventListener('pointerup', (e) => {
+  try {
+    canvas.releasePointerCapture(e.pointerId);
+  } catch {
+    /* already released */
+  }
+  finishPointerInteraction(e);
+});
+
+canvas.addEventListener('pointercancel', (e) => {
+  finishPointerInteraction(e);
+});
+
+window.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    spacePanActive = true;
+    e.preventDefault();
+  }
+});
+
+window.addEventListener('keyup', (e) => {
+  if (e.code === 'Space') {
+    spacePanActive = false;
+  }
 });
 
 canvas.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -326,6 +422,6 @@ document.getElementById('btnBack')!.addEventListener('click', () => {
 renderToolPanel();
 camera.x = (DEFAULT_W * 32) / 4;
 camera.y = (DEFAULT_H * 32) / 4;
-setStatus('地图编辑器：左键绘制，Shift+拖动平移，右键删除');
+setStatus('地图编辑器：平移工具=按住拖动；绘制工具=左键涂抹；空格/Shift/中键也可拖动画布');
 resizeCanvas();
 requestAnimationFrame(loop);

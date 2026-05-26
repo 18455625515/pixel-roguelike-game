@@ -165,7 +165,13 @@ function updateGameOutcomeOverlay(): void {
 }
 
 function joinGame(): void {
-  document.getElementById('joinDialog')!.style.display = 'none';
+  const loginScreen = document.getElementById('loginScreen');
+  if (loginScreen) {
+    loginScreen.hidden = true;
+  } else {
+    document.getElementById('joinDialog')!.style.display = 'none';
+  }
+  document.body.classList.add('game-active');
   document.getElementById('gameContainer')!.style.display = 'flex';
   focusPlayerBase();
   renderActionPanel();

@@ -181,12 +181,13 @@ export class RtsRenderer {
     const endY = Math.min(state.mapHeight, Math.ceil((camera.y + this.height / camera.zoom) / tileSize) + 1);
 
     const bounds = this.getViewBounds(state, camera);
-    this.ctx.fillStyle = TERRAIN_COLORS.water;
+    this.ctx.fillStyle = '#14181c';
     this.ctx.fillRect(bounds.left, bounds.top, bounds.right - bounds.left, bounds.bottom - bounds.top);
 
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
         const tile = state.tiles[y * state.mapWidth + x];
+        if (!tile) continue;
         const screenX = Math.floor(x * tileSize);
         const screenY = Math.floor(y * tileSize);
 
@@ -301,7 +302,16 @@ export class RtsRenderer {
     }
 
     if (!perfLite) {
-      this.drawHealthBar(building.x, building.y - 7, building.width, building.health, building.maxHealth, building.complete ? '#ff5261' : '#ffd166');
+      const isFriendly =
+        building.factionId === 'player' || state.factions[building.factionId]?.stance === 'ally';
+      const barColor = isFriendly
+        ? building.complete
+          ? '#50d9ff'
+          : '#3d9ee6'
+        : building.complete
+          ? '#ff5261'
+          : '#ffd166';
+      this.drawHealthBar(building.x, building.y - 7, building.width, building.health, building.maxHealth, barColor);
     }
   }
 

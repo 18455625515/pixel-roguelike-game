@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" shape-rendering="crispEdges">
+  <rect width="320" height="180" fill="#120a0c"/>
+  <rect x="0" y="0" width="320" height="90" fill="#281820"/>
+  <rect x="0" y="90" width="320" height="90" fill="#1c1814"/>
+  <rect x="0" y="108" width="320" height="72" fill="#242018"/>
+  <!-- fire glow -->
+  <rect x="140" y="64" width="40" height="24" fill="#ff6b35" opacity="0.35"/>
+  <rect x="152" y="72" width="16" height="16" fill="#ffd166" opacity="0.5"/>
+  <!-- campfire -->
+  <rect x="156" y="100" width="8" height="12" fill="#8a4020"/>
+  <rect x="152" y="92" width="16" height="8" fill="#ff8844"/>
+  <rect x="156" y="88" width="8" height="6" fill="#ffcc66"/>
+  <!-- tents -->
+  <rect x="48" y="88" width="32" height="24" fill="#3a4858"/>
+  <rect x="44" y="80" width="40" height="12" fill="#4a5a6a"/>
+  <rect x="232" y="92" width="36" height="20" fill="#4a3848"/>
+  <rect x="228" y="84" width="44" height="12" fill="#5a4858"/>
+  <!-- soldiers row -->
+  <rect x="72" y="108" width="8" height="14" fill="#50d9ff"/>
+  <rect x="70" y="104" width="12" height="6" fill="#2a3848"/>
+  <rect x="88" y="108" width="8" height="14" fill="#39ff88"/>
+  <rect x="86" y="104" width="12" height="6" fill="#2a4030"/>
+  <rect x="104" y="108" width="8" height="14" fill="#c8a060"/>
+  <rect x="102" y="104" width="12" height="6" fill="#4a3828"/>
+  <rect x="120" y="108" width="8" height="14" fill="#50d9ff"/>
+  <rect x="118" y="104" width="12" height="6" fill="#2a3848"/>
+  <rect x="184" y="108" width="8" height="14" fill="#39ff88"/>
+  <rect x="182" y="104" width="12" height="6" fill="#2a4030"/>
+  <rect x="200" y="108" width="8" height="14" fill="#ff5261"/>
+  <rect x="198" y="104" width="12" height="6" fill="#4a2828"/>
+  <rect x="216" y="108" width="8" height="14" fill="#c8a060"/>
+  <rect x="214" y="104" width="12" height="6" fill="#4a3828"/>
+  <!-- commander banner -->
+  <rect x="148" y="48" width="4" height="40" fill="#6a5020"/>
+  <rect x="152" y="48" width="20" height="14" fill="#39ff88"/>
+  <rect x="156" y="52" width="12" height="6" fill="#07110c"/>
+  <!-- spears -->
+  <rect x="64" y="96" width="2" height="20" fill="#8a8070"/>
+  <rect x="248" y="96" width="2" height="20" fill="#8a8070"/>
+  <rect x="280" y="100" width="2" height="18" fill="#8a8070"/>
+  <!-- ground -->
+  <rect x="0" y="132" width="320" height="48" fill="#2a2418"/>
+  <rect x="20" y="140" width="280" height="4" fill="#3a3428"/>
+</svg>

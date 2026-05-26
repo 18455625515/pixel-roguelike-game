@@ -46,6 +46,12 @@ const STUCK_SIDE_STEP = TILE_SIZE * 1.15;
 const FRIENDLY_COLLISION_FACTOR = 0.28;
 
 const NPC_FACTION_IDS = ['north', 'village', 'miners', 'south', 'raiders'] as const;
+/** 阵营据点（含城墙）中心之间的最小格距 */
+const FACTION_SETTLEMENT_DIST_RATIO = 0.36;
+const FACTION_SETTLEMENT_DIST_MIN = 30;
+const FACTION_SETTLEMENT_DIST_MAX = 62;
+/** 非本阵营任意建筑附近禁止落点的格距（防止附属建筑贴到邻邦） */
+const OTHER_FACTION_BUILDING_BUFFER = 14;
 
 const RESOURCE_TYPES: ResourceType[] = ['food', 'wood', 'stone', 'iron', 'gold', 'population'];
 
@@ -183,19 +189,34 @@ export class RtsWorld {
   editorSetTerrain(tileX: number, tileY: number, terrain: TerrainType): boolean {
     const tile = this.getTile(tileX, tileY);
     if (!tile) return false;
+
     tile.terrain = terrain;
     if (terrain === 'water' || terrain === 'mountain') {
       tile.resource = undefined;
       tile.resourceAmount = undefined;
+      tile.maxResourceAmount = undefined;
+      tile.resourceRegenAt = undefined;
+      tile.depletedTerrain = undefined;
+      tile.depletedResource = undefined;
+    } else {
+      // 填海/覆盖：水域、桥梁等均可改为陆地地形
+      if (terrain === 'field') {
+        tile.fertility = 0.85;
+      } else if (terrain === 'grass') {
+        tile.fertility = 0.75 + Math.random() * 0.2;
+      }
+      if (terrain !== 'forest') {
+        tile.resourceRegenAt = undefined;
+        tile.depletedTerrain = undefined;
+        tile.depletedResource = undefined;
+      }
     }
-    if (terrain === 'field') tile.fertility = 0.85;
-    if (terrain === 'grass') tile.fertility = 0.75 + Math.random() * 0.2;
     return true;
   }
 
   editorSetResource(tileX: number, tileY: number, resource: ResourceType | null, amount = 100): boolean {
     const tile = this.getTile(tileX, tileY);
-    if (!tile || tile.terrain === 'water') return false;
+    if (!tile) return false;
     if (!resource) {
       tile.resource = undefined;
       tile.resourceAmount = undefined;
@@ -737,10 +758,7 @@ export class RtsWorld {
     if (missing.length === 0) return;
 
     const centers = this.collectSettlementCenters();
-    const minDist = Math.max(
-      26,
-      Math.min(58, Math.floor(Math.min(this.state.mapWidth, this.state.mapHeight) * 0.32))
-    );
+    const minDist = this.getMinFactionSettlementDistance();
     const footprint = 12;
     let seeded = 0;
 
@@ -750,10 +768,21 @@ export class RtsWorld {
       const anchor = this.findFarSettlementAnchor(preferred, footprint, footprint, centers, minDist);
       if (!anchor) return;
       this.seedFactionOutpost(factionId, anchor.x, anchor.y);
-      centers.push({
-        x: anchor.x + Math.floor(footprint / 2),
-        y: anchor.y + Math.floor(footprint / 2),
-      });
+      const hall = Object.values(this.state.buildings).find(
+        (b) =>
+          b.factionId === factionId && (b.type === 'townHall' || b.type === 'market')
+      );
+      if (hall) {
+        centers.push({
+          x: Math.floor(this.centerOf(hall).x / TILE_SIZE),
+          y: Math.floor(this.centerOf(hall).y / TILE_SIZE),
+        });
+      } else {
+        centers.push({
+          x: anchor.x + Math.floor(footprint / 2),
+          y: anchor.y + Math.floor(footprint / 2),
+        });
+      }
       seeded++;
     });
 
@@ -817,6 +846,38 @@ export class RtsWorld {
 
   getRemainingNpcHeadquarters(): string[] {
     return [...this.npcFactionsInPlay].filter((id) => this.factionHasSettlement(id));
+  }
+
+  private getMinFactionSettlementDistance(): number {
+    return Math.max(
+      FACTION_SETTLEMENT_DIST_MIN,
+      Math.min(
+        FACTION_SETTLEMENT_DIST_MAX,
+        Math.floor(Math.min(this.state.mapWidth, this.state.mapHeight) * FACTION_SETTLEMENT_DIST_RATIO)
+      )
+    );
+  }
+
+  private isFarEnoughFromOtherFactions(
+    tileX: number,
+    tileY: number,
+    footprintW: number,
+    footprintH: number,
+    factionId: string,
+    minTileDist: number
+  ): boolean {
+    const center = {
+      x: tileX + footprintW / 2,
+      y: tileY + footprintH / 2,
+    };
+    return !Object.values(this.state.buildings).some((building) => {
+      if (building.factionId === factionId) return false;
+      const otherCenter = {
+        x: (building.x + building.width / 2) / TILE_SIZE,
+        y: (building.y + building.height / 2) / TILE_SIZE,
+      };
+      return this.tileDistance(center, otherCenter) < minTileDist;
+    });
   }
 
   private collectSettlementCenters(): Array<{ x: number; y: number }> {
@@ -1053,12 +1114,24 @@ export class RtsWorld {
     return true;
   }
 
-  private findSettlementAnchor(preferredTileX: number, preferredTileY: number, footprintW: number, footprintH: number): { x: number; y: number } | null {
+  private findSettlementAnchor(
+    preferredTileX: number,
+    preferredTileY: number,
+    footprintW: number,
+    footprintH: number,
+    factionId?: string
+  ): { x: number; y: number } | null {
     const mapWidth = this.state.mapWidth;
     const mapHeight = this.state.mapHeight;
     const tryPoint = (tx: number, ty: number) => {
       if (tx < 2 || ty < 2 || tx + footprintW >= mapWidth - 2 || ty + footprintH >= mapHeight - 2) return null;
       if (!this.isSettlementFootprintClear(tx, ty, footprintW, footprintH)) return null;
+      if (
+        factionId &&
+        !this.isFarEnoughFromOtherFactions(tx, ty, footprintW, footprintH, factionId, OTHER_FACTION_BUILDING_BUFFER)
+      ) {
+        return null;
+      }
       return { x: tx, y: ty };
     };
 
@@ -1086,7 +1159,7 @@ export class RtsWorld {
 
   private placeInitialBuilding(factionId: string, type: BuildingType, tileX: number, tileY: number): Building | null {
     const stats = BUILDING_STATS[type];
-    const anchor = this.findSettlementAnchor(tileX, tileY, stats.width + 1, stats.height + 1);
+    const anchor = this.findSettlementAnchor(tileX, tileY, stats.width + 1, stats.height + 1, factionId);
     if (!anchor) return null;
     const building = this.createBuilding(factionId, type, anchor.x * TILE_SIZE, anchor.y * TILE_SIZE);
     this.state.buildings[building.id] = building;
@@ -1174,13 +1247,19 @@ export class RtsWorld {
     }
 
     this.playerBaseCenter = this.centerOf(playerHall);
-    this.placeInitialWallRingAround(playerHall, 'player');
-    this.placeInitialBuilding('player', 'warehouse', px + 5, py + 1);
-    this.placeInitialBuilding('player', 'barracks', px, py - 5);
-    this.placeInitialBuilding('player', 'house', px + 5, py - 3);
-    this.placeInitialBuilding('player', 'farm', px - 5, py + 2);
-    this.placeInitialBuilding('player', 'lumberCamp', px + 2, py + 5);
-    this.placeInitialBuilding('player', 'tower', px - 4, py - 1);
+
+    const playerBuildings: Array<{ type: BuildingType; dx: number; dy: number }> = [
+      { type: 'warehouse', dx: 8, dy: 2 },
+      { type: 'barracks', dx: -1, dy: -9 },
+      { type: 'house', dx: 10, dy: -3 },
+      { type: 'farm', dx: -9, dy: 4 },
+      { type: 'lumberCamp', dx: 5, dy: 9 },
+      { type: 'tower', dx: -8, dy: -1 },
+    ];
+    playerBuildings.forEach((slot) => {
+      this.placeInitialBuildingNear('player', slot.type, px + slot.dx, py + slot.dy);
+    });
+    this.placeInitialTerritoryWallRing('player');
 
     const starterRoles: UnitRole[] = [
       'commander',
@@ -1200,31 +1279,143 @@ export class RtsWorld {
       this.spawnUnitSafe('player', role, px + 4, py + 4, index);
     });
 
+    const settlementCenters = this.collectSettlementCenters();
+
     (Object.keys(FACTION_START_HINTS) as Array<keyof typeof FACTION_START_HINTS>)
       .filter((id) => id !== 'player')
       .forEach((factionId) => {
-        const hint = FACTION_START_HINTS[factionId];
-        const tile = this.uvToTile(hint.u, hint.v);
-        this.seedFactionOutpost(factionId, tile.x, tile.y);
+        this.seedNpcFactionAtDistance(factionId, settlementCenters);
       });
 
     this.log('边境城邦建立于欧陆平原。开局停战 5 分钟，各阵营已修筑城墙。');
   }
 
-  private placeInitialWallRingAround(hall: Building, factionId: string): void {
-    const hallTileX = Math.floor(hall.x / TILE_SIZE);
-    const hallTileY = Math.floor(hall.y / TILE_SIZE);
-    const hallW = Math.ceil(hall.width / TILE_SIZE);
-    const hallH = Math.ceil(hall.height / TILE_SIZE);
-    const topY = hallTileY - 1;
-    const bottomY = hallTileY + hallH;
-    const leftX = hallTileX - 1;
-    const rightX = hallTileX + hallW;
+  /** 在远离已有据点处生成 NPC 阵营基地 */
+  private seedNpcFactionAtDistance(
+    factionId: string,
+    centers: Array<{ x: number; y: number }>
+  ): void {
+    const hint = FACTION_START_HINTS[factionId];
+    if (!hint) return;
+    const preferred = this.uvToTile(hint.u, hint.v);
+    const minDist = this.getMinFactionSettlementDistance();
+    const footprint = 12;
+    const anchor = this.findFarSettlementAnchor(preferred, footprint, footprint, centers, minDist);
+    if (!anchor) {
+      this.log(`无法为 ${this.state.factions[factionId]?.name ?? factionId} 找到足够远的落点。`);
+      return;
+    }
+    this.seedFactionOutpost(factionId, anchor.x, anchor.y);
+    const hall = Object.values(this.state.buildings).find(
+      (b) => b.factionId === factionId && (b.type === 'townHall' || b.type === 'market')
+    );
+    if (hall) {
+      centers.push({
+        x: Math.floor(this.centerOf(hall).x / TILE_SIZE),
+        y: Math.floor(this.centerOf(hall).y / TILE_SIZE),
+      });
+    }
+  }
+
+  private placeInitialBuildingNear(
+    factionId: string,
+    type: BuildingType,
+    preferredTileX: number,
+    preferredTileY: number
+  ): Building | null {
+    const tryAt = (tx: number, ty: number) => this.placeInitialBuildingAt(factionId, type, tx, ty, 2);
+
+    const direct = tryAt(preferredTileX, preferredTileY);
+    if (direct) return direct;
+
+    for (let radius = 1; radius <= 20; radius++) {
+      for (let dy = -radius; dy <= radius; dy++) {
+        for (let dx = -radius; dx <= radius; dx++) {
+          if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
+          const placed = tryAt(preferredTileX + dx, preferredTileY + dy);
+          if (placed) return placed;
+        }
+      }
+    }
+    return null;
+  }
+
+  private placeInitialBuildingAt(
+    factionId: string,
+    type: BuildingType,
+    tileX: number,
+    tileY: number,
+    gapTiles = 2
+  ): Building | null {
+    if (!this.canPlaceInitialBuildingAt(tileX, tileY, type, factionId, gapTiles)) return null;
+    const building = this.createBuilding(factionId, type, tileX * TILE_SIZE, tileY * TILE_SIZE);
+    this.state.buildings[building.id] = building;
+    return building;
+  }
+
+  private canPlaceInitialBuildingAt(
+    tileX: number,
+    tileY: number,
+    type: BuildingType,
+    factionId: string,
+    gapTiles: number
+  ): boolean {
+    const stats = BUILDING_STATS[type];
+    if (!this.canPlaceBuilding(tileX, tileY, stats.width, stats.height, type)) return false;
+    if (this.buildingFootprintConflicts(tileX, tileY, stats.width, stats.height, gapTiles, factionId, true)) {
+      return false;
+    }
+    if (this.buildingFootprintConflicts(tileX, tileY, stats.width, stats.height, 0)) {
+      return false;
+    }
+    return true;
+  }
+
+  private buildingFootprintConflicts(
+    tileX: number,
+    tileY: number,
+    width: number,
+    height: number,
+    gapTiles: number,
+    onlyFactionId?: string,
+    skipWalls = false
+  ): boolean {
+    const pad = gapTiles * TILE_SIZE;
+    const x1 = tileX * TILE_SIZE - pad;
+    const y1 = tileY * TILE_SIZE - pad;
+    const x2 = (tileX + width) * TILE_SIZE + pad;
+    const y2 = (tileY + height) * TILE_SIZE + pad;
+
+    return Object.values(this.state.buildings).some((building) => {
+      if (onlyFactionId && building.factionId !== onlyFactionId) return false;
+      if (skipWalls && (building.type === 'wall' || building.type === 'gate')) return false;
+      return (
+        x1 < building.x + building.width &&
+        x2 > building.x &&
+        y1 < building.y + building.height &&
+        y2 > building.y
+      );
+    });
+  }
+
+  /** 根据阵营已有建筑（不含城墙/城门）外扩一圈城墙与四门，围住整块领地 */
+  private placeInitialTerritoryWallRing(factionId: string, paddingTiles = 3): void {
+    const bounds = this.getFactionTerritoryTileBounds(factionId);
+    if (!bounds) return;
+
+    const innerLeft = bounds.minX;
+    const innerTop = bounds.minY;
+    const innerRight = bounds.maxX;
+    const innerBottom = bounds.maxY;
+    const leftX = innerLeft - paddingTiles;
+    const topY = innerTop - paddingTiles;
+    const rightX = innerRight + paddingTiles;
+    const bottomY = innerBottom + paddingTiles;
     const gateKeys = new Set([
-      `${hallTileX + Math.floor(hallW / 2)},${topY}`,
-      `${hallTileX + Math.floor(hallW / 2)},${bottomY}`,
-      `${leftX},${hallTileY + Math.floor(hallH / 2)}`,
-      `${rightX},${hallTileY + Math.floor(hallH / 2)}`,
+      `${Math.floor((innerLeft + innerRight) / 2)},${topY}`,
+      `${Math.floor((innerLeft + innerRight) / 2)},${bottomY}`,
+      `${leftX},${Math.floor((innerTop + innerBottom) / 2)}`,
+      `${rightX},${Math.floor((innerTop + innerBottom) / 2)}`,
     ]);
 
     const placements: Array<{ x: number; y: number; type: 'wall' | 'gate' }> = [];
@@ -1232,7 +1423,7 @@ export class RtsWorld {
       placements.push({ x, y: topY, type: gateKeys.has(`${x},${topY}`) ? 'gate' : 'wall' });
       placements.push({ x, y: bottomY, type: gateKeys.has(`${x},${bottomY}`) ? 'gate' : 'wall' });
     }
-    for (let y = hallTileY; y < hallTileY + hallH; y++) {
+    for (let y = topY; y <= bottomY; y++) {
       placements.push({ x: leftX, y, type: gateKeys.has(`${leftX},${y}`) ? 'gate' : 'wall' });
       placements.push({ x: rightX, y, type: gateKeys.has(`${rightX},${y}`) ? 'gate' : 'wall' });
     }
@@ -1242,6 +1433,40 @@ export class RtsWorld {
       const building = this.createBuilding(factionId, slot.type, slot.x * TILE_SIZE, slot.y * TILE_SIZE);
       this.state.buildings[building.id] = building;
     });
+  }
+
+  private getFactionTerritoryTileBounds(factionId: string): {
+    minX: number;
+    minY: number;
+    maxX: number;
+    maxY: number;
+  } | null {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    let found = false;
+
+    Object.values(this.state.buildings).forEach((building) => {
+      if (building.factionId !== factionId) return;
+      if (building.type === 'wall' || building.type === 'gate') return;
+      const tileX = Math.floor(building.x / TILE_SIZE);
+      const tileY = Math.floor(building.y / TILE_SIZE);
+      const tileW = Math.ceil(building.width / TILE_SIZE);
+      const tileH = Math.ceil(building.height / TILE_SIZE);
+      minX = Math.min(minX, tileX);
+      minY = Math.min(minY, tileY);
+      maxX = Math.max(maxX, tileX + tileW - 1);
+      maxY = Math.max(maxY, tileY + tileH - 1);
+      found = true;
+    });
+
+    if (!found) return null;
+    return { minX, minY, maxX, maxY };
+  }
+
+  private placeInitialWallRingAround(hall: Building, factionId: string): void {
+    this.placeInitialTerritoryWallRing(factionId);
   }
 
   private isTruceActive(): boolean {
@@ -1268,17 +1493,30 @@ export class RtsWorld {
     const hallType: BuildingType = factionId === 'village' ? 'market' : 'townHall';
     const hall = this.placeInitialBuilding(factionId, hallType, tileX, tileY);
     if (!hall) return;
-    this.placeInitialWallRingAround(hall, factionId);
 
-    const extras: BuildingType[] =
+    const extras: Array<{ type: BuildingType; dx: number; dy: number }> =
       factionId === 'raiders' || factionId === 'south'
-        ? ['barracks', 'tower', 'house']
+        ? [
+            { type: 'barracks', dx: 8, dy: -7 },
+            { type: 'tower', dx: -7, dy: -6 },
+            { type: 'house', dx: 10, dy: 3 },
+          ]
         : factionId === 'miners'
-          ? ['warehouse', 'smithy', 'house']
-          : ['house', 'warehouse', 'lumberCamp'];
-    extras.forEach((type, index) => {
-      this.placeInitialBuilding(factionId, type, tileX + 4 + index * 2, tileY + 3);
+          ? [
+              { type: 'warehouse', dx: 9, dy: 2 },
+              { type: 'smithy', dx: -8, dy: 3 },
+              { type: 'house', dx: 3, dy: 9 },
+            ]
+          : [
+              { type: 'house', dx: 9, dy: 1 },
+              { type: 'warehouse', dx: -8, dy: 4 },
+              { type: 'lumberCamp', dx: 4, dy: 9 },
+            ];
+
+    extras.forEach((slot) => {
+      this.placeInitialBuildingNear(factionId, slot.type, tileX + slot.dx, tileY + slot.dy);
     });
+    this.placeInitialTerritoryWallRing(factionId);
 
     const roles: UnitRole[] =
       factionId === 'raiders' || factionId === 'south'
